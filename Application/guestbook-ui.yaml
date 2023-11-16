@@ -8,15 +8,15 @@ metadata:
 spec:
   destination:
     server: https://kubernetes.default.svc
-    namespace: default
+    namespace: guestbook
   project: default
   source:
     path: Deployment/guestbook-ui/
     repoURL: https://github.com/shivam199064/Argocd-Setup.git
     targetRevision: HEAD
-  syncPolicy:
-    automated:
-      prune: true
-      selfHeal: true
+  # syncPolicy:
+  #   automated:
+  #     prune: true
+  #     selfHeal: true
       
 
