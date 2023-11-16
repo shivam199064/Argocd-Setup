@@ -11,8 +11,8 @@ spec:
     namespace: monitoring
   project: default
   source:
-    path: Prometheus/
-    repoURL: https://github.com/shivam199064/Deployment.git
+    path: Deployment/Prometheus/
+    repoURL: https://github.com/shivam199064/Argocd-Setup.git
     targetRevision: HEAD
   # syncPolicy:
   #   automated:

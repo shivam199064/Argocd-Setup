@@ -11,8 +11,8 @@ spec:
     namespace: default
   project: default
   source:
-    path: deployment/
-    repoURL: https://github.com/shivam199064/test.git
+    path: Deployment/guestbook-ui/
+    repoURL: https://github.com/shivam199064/Argocd-Setup.git
     targetRevision: HEAD
   syncPolicy:
     automated:
