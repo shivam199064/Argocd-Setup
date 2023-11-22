@@ -14,9 +14,7 @@ data:
       gchat:
         method: POST
         body: |
-          {
-          "text": "*App:*   {{ .app.metadata.name }}\n*State:*    Sync! \n"
-          }
+          {"cardsV2":[{"cardId":"unique-card-id","card":{"header":{"title":"Shivam Saini","subtitle":"DevSecOps","imageUrl":"https://lh3.googleusercontent.com/a/ACg8ocJBQPR_yrhZMTUbOApAhAM_5_fyuODKlou40b8ADAgpcA=s576-c-no","imageType":"CIRCLE","imageAltText":"Avatar for Shivam Saini"},"sections":[{"header":"Contact Info","widgets":[{"decoratedText":{"startIcon":{"knownIcon":"EMAIL"},"text":"shivam.saini@zerodhafundhouse.com"}},{"decoratedText":{"startIcon":{"knownIcon":"PERSON"},"text":"Online"}}]}]}}]}
   template.fail: |
     webhook:
       gchat:
