@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: alertManager
+  name: alert-manager
   namespace: argocd
   annotations:
     notifications.argoproj.io/subscribe.sync-operation-change.gchat: spaceName
@@ -18,5 +18,5 @@ spec:
   #   automated:
   #     prune: true
   #     selfHeal: true
-      
+    
 
