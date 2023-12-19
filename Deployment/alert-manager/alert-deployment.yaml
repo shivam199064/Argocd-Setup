@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: alertmanager
-        image: shivam199063/alert:v1
+        image: shivam199063/alert:v2
         args:
           - "--config.file=/etc/alertmanager/config.yml"
           - "--storage.path=/alertmanager"
