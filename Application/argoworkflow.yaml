@@ -3,6 +3,8 @@ kind: Application
 metadata:
   name: argo-workflow
   namespace: argocd
+  annotations:
+    notifications.argoproj.io/subscribe.sync-operation-change.gchat: spaceName
 spec:
   project: default
   source:
