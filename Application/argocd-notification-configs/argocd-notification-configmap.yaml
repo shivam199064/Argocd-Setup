@@ -32,9 +32,19 @@ data:
         method: POST
         body: |
           {
-          "text": "*App:*   {{ .app.metadata.name }}\n*State:*    OutOfSync! \n*Author:*    {{ (call .repo.GetCommitMetadata .app.status.sync.revision).Author }}\n*Changes:*   {{ (call .repo.GetCommitMetadata .app.status.sync.revision).Message }}"
+          "text": "*App:*     `{{ .app.metadata.name }}`\n*State:*    <{{ trimSuffix ".git" .app.spec.source.repoURL }}/commit/{{ .app.status.sync.revision }}|OutOfSync!> \n*Author:*    `{{ (call .repo.GetCommitMetadata .app.status.sync.revision).Author }}`\n*Changes:*   `{{ (call .repo.GetCommitMetadata .app.status.sync.revision).Message }}` "
           }
-        
+
+  template.synctest: |
+    webhook:
+      gchat:
+        method: POST
+        body: |
+          {
+          "text": "*App:*     `{{ .app.metadata.name }}`\n*State:*    <{{ trimSuffix ".git" .app.spec.source.repoURL }}/commit/{{ .app.status.sync.revision }}|OutOfSync!> \n*Author:*    `{{ (call .repo.GetCommitMetadata .app.status.sync.revision).Author }}`\n*Changes:*   `{{ (call .repo.GetCommitMetadata .app.status.sync.revision).Message }}` "
+          }
+  
+
   trigger.sync-operation-change: |
     - when: app.status.operationState.phase in ['Error', 'Failed']
       send: [fail]
@@ -42,3 +52,4 @@ data:
       send: [out]
     - when: app.status.operationState.phase in ['Running']
       send: [sync]
+    
