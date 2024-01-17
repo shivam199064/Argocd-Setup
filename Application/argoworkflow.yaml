@@ -6,7 +6,7 @@ metadata:
 spec:
   project: default
   source:
-    path: DeploymentHelm/argo-helm/argo-workflows
+    path: DeploymentHelm/argo/argo-workflows
     helm:
       version: v3
       releaseName: argocd
