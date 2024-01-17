@@ -4,7 +4,7 @@ metadata:
   name: argo-workflow
   namespace: argocd
 spec:
-  project: infra
+  project: default
   source:
     path: DeploymentHelm/argo-helm/argo-workflows
     helm:
