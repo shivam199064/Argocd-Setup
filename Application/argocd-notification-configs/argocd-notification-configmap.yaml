@@ -7,15 +7,16 @@ data:
   service.webhook.gchat: |
     url: $webhook-url
     headers:
-    -name: "Content-Type"
-    value: "application/json"
+    - name: "Content-Type"
+      value: "application/json"
+  
   template.sync: |
     webhook:
       gchat:
         method: POST
         body: |
           {
-          "text": "*App:*   {{ .app.metadata.name }}\n*State:*    Sync! \n"
+          "text": "The app *{{ .app.metadata.name }}* has *successfully synced!* by *{{ .app.status.operationState.operation.initiatedBy.username}}*"
           }
   template.fail: |
     webhook:
@@ -33,24 +34,11 @@ data:
           {
           "text": "*App:*   {{ .app.metadata.name }}\n*State:*    OutOfSync! \n*Author:*    {{ (call .repo.GetCommitMetadata .app.status.sync.revision).Author }}\n*Changes:*   {{ (call .repo.GetCommitMetadata .app.status.sync.revision).Message }}"
           }
-
-  template.prune: |
-    webhook:
-      gchat:
-        method: POST
-        body: |
-          {
-          "text": "The app *{{ .app.metadata.name }}* health status is in *Progressing* mode So we need to *prune* old deployment! "
-          }
-          
+        
   trigger.sync-operation-change: |
-    - when: app.status.operationState.phase in ['Succeeded'] and app.status.health.status == 'Healthy' and app.status.sync.status != 'OutOfSync' 
-      # oncePer: app.status.sync.revision
-      send: [sync]
     - when: app.status.operationState.phase in ['Error', 'Failed']
       send: [fail]
     - when: app.status.sync.status in ['OutOfSync']
       send: [out]
-    # - when: app.status.operationState.phase in ['Succeeded'] and app.status.health.status == 'Progressing'
-    #   send: [prune]
-    #   and time.Now().Sub(time.Parse(app.status.operationState.startedAt)).Minutes() >= 2
+    - when: app.status.operationState.phase in ['Running']
+      send: [sync]

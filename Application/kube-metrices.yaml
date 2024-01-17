@@ -14,9 +14,9 @@ spec:
     path: Deployment/kube-state-metrics/
     repoURL: https://github.com/shivam199064/Argocd-Setup.git
     targetRevision: HEAD
-  syncPolicy:
-    syncOptions:
-      - CreateNamespace=true
+  # syncPolicy:
+  #   syncOptions:
+  #     - CreateNamespace=true
     # automated:
     #   prune: true
     #   selfHeal: true

@@ -18,7 +18,8 @@ spec:
   destination:
     server: https://kubernetes.default.svc
     namespace: trivy-system
-  syncPolicy:
-    automated:
-      prune: false
-      selfHeal: false
+  # syncPolicy:
+  #   - CreateNamespace=true
+  #   # automated:
+  #   #   prune: false
+  #   #   selfHeal: false
