@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: argo-workflow
+  namespace: argocd
+spec:
+  project: infra
+  source:
+    path: DeploymentHelm/argo-helm/argo-workflows
+    helm:
+      version: v3
+      releaseName: argocd
+      valueFiles:
+      - values.yaml
+      skipCrds: true
+    repoURL: https://github.com/shivam199064/Argocd-Setup.git
+    targetRevision: HEAD
+  destination:
+    namespace: argo
+    server: 'https://kubernetes.default.svc'
