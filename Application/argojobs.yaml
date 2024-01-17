@@ -1,0 +1,16 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: workflow-jobs
+  namespace: argocd
+  annotations:
+    notifications.argoproj.io/subscribe.sync-operation-change.gchat: spaceName
+spec:
+  project: default
+  source:
+    repoURL: "https://github.com/shivam199064/Argocd-Setup.git"
+    path: workflow-jobs/
+    targetRevision: HEAD
+  destination:
+    namespace: workflows
+    server: 'https://kubernetes.default.svc'
