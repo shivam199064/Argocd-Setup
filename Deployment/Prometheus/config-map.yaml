@@ -10,13 +10,6 @@ data:
     groups:
     - name: devopscube demo alert
       rules:
-    #   - alert: High Pod Memory
-    #     expr: sum(container_memory_usage_bytes) > 1
-    #     for: 1m
-    #     labels:
-    #       severity: slack
-    #     annotations:
-    #       summary: High Memory Usage
       - alert: GrafanaMissing
         expr: absent(up{app_kubernetes_io_instance="grafanaa"}) == 1
         for: 1m
