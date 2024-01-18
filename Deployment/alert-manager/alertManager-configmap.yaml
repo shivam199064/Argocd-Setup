@@ -12,24 +12,25 @@ data:
       receiver: alert-emailer
       group_by: ['alertname', 'priority']
       group_wait: 10s
-      repeat_interval: 30m
+      repeat_interval: 1m
       routes:
-        - receiver: slack_demo
+        - receiver: googlechat
         # Send severity=slack alerts to slack.
-          match:
-            severity: slack
-          group_wait: 10s
-          repeat_interval: 1m
+          continue: true
  
     receivers:
-    - name: alert-emailer
-      email_configs:
-      - to: demo@devopscube.com
-        send_resolved: false
-        from: from-email@email.com
-        smarthost: smtp.eample.com:25
-        require_tls: false
-    - name: slack_demo
-      slack_configs:
-      - api_url: https://hooks.slack.com/services/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sz4Qk
-        channel: '#devopscube-demo'
+    # - name: alert-emailer
+    #   email_configs:
+    #   - to: demo@devopscube.com
+    #     send_resolved: false
+    #     from: from-email@email.com
+    #     smarthost: smtp.eample.com:25
+    #     require_tls: false
+    # - name: slack_demo
+    #   slack_configs:
+    #   - api_url: https://hooks.slack.com/services/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sz4Qk
+    #     channel: '#devopscube-demo'
+    
+    - name: googlechat:
+      googlechat_configs:
+      - url: "https://chat.googleapis.com/v1/spaces/AAAAMzjtN-g/messages?key=AIzaSyDdI0hCZtE6vySjMm-WEfRq3CPzqKqqsHI&token=p5qsksJcUBw0EaARZhUYaqrOLqyK5VnHHnN56rc6kgQ"
