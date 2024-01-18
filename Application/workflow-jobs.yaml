@@ -10,6 +10,8 @@ spec:
   source:
     repoURL: "https://github.com/shivam199064/Argocd-Setup.git"
     path: workflow-jobs/
+    directory:
+      recurse: true
     targetRevision: HEAD
   destination:
     namespace: workflows
