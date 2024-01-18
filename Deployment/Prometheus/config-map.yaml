@@ -18,7 +18,7 @@ data:
         annotations:
           summary: High Memory Usage
       - alert: GrafanaMissing
-        expr: absent(up{app_kubernetes_io_instance="grafanaa"}) = 1
+        expr: absent(up{app_kubernetes_io_instance="grafanaa"}) == 1
         for: 0m
         labels:
           severity: warning
