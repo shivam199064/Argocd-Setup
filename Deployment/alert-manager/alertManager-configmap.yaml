@@ -21,4 +21,4 @@ data:
     receivers:
     - name: googlechat
       googlechat_configs:
-      - url: https://chat.googleapis.com/v1/spaces/AAAAMzjtN-g/messages?key=AIzaSyDdI0hCZtE6vySjMm-WEfRq3CPzqKqqsHI&token=p5qsksJcUBw0EaARZhUYaqrOLqyK5VnHHnN56rc6kgQ
+      - url: "url"
