@@ -17,6 +17,14 @@ data:
           severity: slack
         annotations:
           summary: High Memory Usage
+      - alert: GrafanaMissing
+        expr: absent(up{app_kubernetes_io_instance="grafanaa"})
+        for: 0m
+        labels:
+          severity: warning
+        annotations:
+          summary: grafana instance missing 
+          description: "A Prometheus job has disappeared\n "
   prometheus.yml: |-
     global:
       scrape_interval: 5s
