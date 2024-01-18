@@ -5,20 +5,20 @@ metadata:
   namespace: monitoring
 data:
   config.yml: |-
-    global:
-    templates:
-    - '/etc/alertmanager/*.tmpl'
-    route:
-      receiver: googlechat
-      group_by: ['alertname', 'priority']
-      group_wait: 10s
-      repeat_interval: 30m
-      routes:
-        - receiver: googlechat
-        # Send severity=slack alerts to slack.
-          continue: true
+    # global:
+    # templates:
+    # - '/etc/alertmanager/*.tmpl'
+    # route:
+    #   receiver: googlechat
+    #   group_by: ['alertname', 'priority']
+    #   group_wait: 10s
+    #   repeat_interval: 30m
+    #   routes:
+    #     - receiver: googlechat
+    #     # Send severity=slack alerts to slack.
+    #       continue: true
  
-    receivers:
-    - name: googlechat:
-      googlechat_configs:
-      - url: "https://chat.googleapis.com/v1/spaces/AAAAMzjtN-g/messages?key=AIzaSyDdI0hCZtE6vySjMm-WEfRq3CPzqKqqsHI&token=p5qsksJcUBw0EaARZhUYaqrOLqyK5VnHHnN56rc6kgQ"
+    # receivers:
+    # - name: googlechat:
+    #   googlechat_configs:
+    #   - url: "https://chat.googleapis.com/v1/spaces/AAAAMzjtN-g/messages?key=AIzaSyDdI0hCZtE6vySjMm-WEfRq3CPzqKqqsHI&token=p5qsksJcUBw0EaARZhUYaqrOLqyK5VnHHnN56rc6kgQ"
