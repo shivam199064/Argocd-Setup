@@ -1,0 +1,25 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: argocd
+  namespace: argocd
+  annotations:
+    notifications.argoproj.io/subscribe.sync-operation-change.gchat: spaceName
+spec:
+  project: default
+  source:
+    path: DeploymentHelm/argo/argo-cd
+    helm:
+      version: v3
+      releaseName: argocd
+      valueFiles:
+      - values.yaml
+      skipCrds: true
+    repoURL: https://github.com/shivam199064/Argocd-Setup.git
+    targetRevision: HEAD
+  destination:
+    namespace: argocd
+    server: 'https://kubernetes.default.svc'
+  syncPolicy:
+    syncOptions:
+      - CreateNamespace=true
