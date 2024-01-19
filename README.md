@@ -16,3 +16,9 @@ kubectl port-forward svc/argocd-argo-workflows-server  8081:2746 -n argo >/dev/n
 ## find login token
 kubectl -n argo  exec -it deploy/argocd-argo-workflows-server -- argo auth token
 
+
+# Create Kube-seal Secret
+
+## create kube secret
+ex: kubectl create secret generic secret-name   --from-literal=webhook=url
+
