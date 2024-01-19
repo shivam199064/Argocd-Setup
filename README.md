@@ -21,4 +21,5 @@ kubectl -n argo  exec -it deploy/argocd-argo-workflows-server -- argo auth token
 
 ## create kube secret
 ex: kubectl create secret generic secret-name   --from-literal=webhook=url
+    kubectl create secret generic argocd-notifications-secret --from-literal=webhook-url="https://url.com"  --dry-run=client -o yaml
 

@@ -11,7 +11,7 @@ spec:
     ttlStrategy:
       secondsAfterCompletion: 1800
   entrypoint: script-template
-  serviceAccountName: workflow
+  # serviceAccountName: workflow
   templates:
   - name: script-template
     script: 
