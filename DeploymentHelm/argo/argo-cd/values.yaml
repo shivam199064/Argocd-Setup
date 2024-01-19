@@ -3039,7 +3039,33 @@ notifications:
 
   # -- The notification template is used to generate the notification content
   ## For more information: https://argocd-notifications.readthedocs.io/en/stable/templates/
-  templates: {}
+  templates: 
+
+  template.sync: |
+    webhook:
+      gchat:
+        method: POST
+        body: |
+          {
+          "text": "The app *{{ .app.metadata.name }}* has *successfully synced!* by *{{ .app.status.operationState.operation.initiatedBy.username}}*"
+          }
+  template.fail: |
+    webhook:
+      gchat:
+        method: POST
+        body: |
+          {
+          "text": "The app *{{ .app.metadata.name }}* has *fail!* "
+          }
+  template.out: |
+    webhook:
+      gchat:
+        method: POST
+        body: |
+          {
+          # "text": "*App:*   {{ .app.metadata.name }}\n*State:*    OutOfSync! \n*Author:*    {{ (call .repo.GetCommitMetadata .app.status.sync.revision).Author }}\n*Changes:*   {{ (call .repo.GetCommitMetadata .app.status.sync.revision).Message }}"
+          "text": "*App:*     `{{ .app.metadata.name }}`\n*State:*    <{{ trimSuffix ".git" .app.spec.source.repoURL }}/commit/{{ .app.status.sync.revision }}|OutOfSync!> \n*Author:*    `{{ (call .repo.GetCommitMetadata .app.status.sync.revision).Author }}`\n*Changes:*   `{{ (call .repo.GetCommitMetadata .app.status.sync.revision).Message }}` "
+          }
     # template.app-deployed: |
     #   email:
     #     subject: New version of an application {{.app.metadata.name}} is up and running.
@@ -3256,7 +3282,16 @@ notifications:
 
   # -- The trigger defines the condition when the notification should be sent
   ## For more information: https://argocd-notifications.readthedocs.io/en/stable/triggers/
-  triggers: {}
+  triggers: 
+
+    trigger.sync-operation-change: |
+    
+      - when: app.status.operationState.phase in ['Error', 'Failed']
+        send: [fail]
+      - when: app.status.sync.status in ['OutOfSync']
+        send: [out]
+      - when: app.status.operationState.phase in ['Running']
+        send: [sync]
     # trigger.on-deployed: |
     #   - description: Application is synced and healthy. Triggered once per commit.
     #     oncePer: app.status.sync.revision
