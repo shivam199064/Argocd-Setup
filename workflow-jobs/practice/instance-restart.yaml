@@ -10,12 +10,12 @@ spec:
       workflowSpec:
         ttlStrategy:
           secondsAfterCompletion: 1800
-      entrypoint: script-template
-      serviceAccountName: workflow
-  templates:
-  - name: script-template
-    script: 
-      image: python:3.8-slim
-      command: [python]
-      source: |
-        print("successfully execute by shivam")
+        entrypoint: script-template
+        serviceAccountName: workflow
+        templates:
+        - name: script-template
+          script: 
+            image: python:3.8-slim
+            command: [python]
+            source: |
+              print("successfully execute by shivam")
