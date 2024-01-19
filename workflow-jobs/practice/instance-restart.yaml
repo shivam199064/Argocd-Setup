@@ -4,6 +4,7 @@ metadata:
   name: instance-restart 
 spec:
   entrypoint: script-template
+  serviceAccountName: workflow
   templates:
   - name: script-template
     script: 

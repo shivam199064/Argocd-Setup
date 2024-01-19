@@ -3,7 +3,8 @@ kind: Workflow                  #new type of k8s spec
 metadata:
   name: hello-world   #name of workflow spec
 spec:
-  entrypoint: whalesay          #invoke the whalesay template
+  entrypoint: whalesay
+  serviceAccountName: workflow         
   templates:
   - name: whalesay              #name of template
     container:

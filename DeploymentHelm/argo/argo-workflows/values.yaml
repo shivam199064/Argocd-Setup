@@ -50,13 +50,13 @@ workflow:
   namespace:
   serviceAccount:
     # -- Specifies whether a service account should be created
-    create: false
+    create: true
     # -- Labels applied to created service account
     labels: {}
     # -- Annotations applied to created service account
     annotations: {}
     # -- Service account which is used to run workflows
-    name: "argo-workflow"
+    name: "workflow"
     # -- Secrets with credentials to pull images from a private registry. Same format as `.Values.images.pullSecrets`
     pullSecrets: []
   rbac:
@@ -241,7 +241,7 @@ controller:
   # workflows. This controls where the service account and RBAC resources will
   # be created. Only valid when singleNamespace is false.
   workflowNamespaces:
-    - default
+    - workflows
 
   instanceID:
     # -- Configures the controller to filter workflow submissions
