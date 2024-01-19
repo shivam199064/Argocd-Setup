@@ -1,0 +1,13 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Workflow                  #new type of k8s spec
+metadata:
+  name: instance-restart 
+spec:
+  entrypoint: script-template
+  templates:
+  - name: script-template
+    script: 
+      image: python:3.8-slim
+      command: [python]
+      source: |
+        print("successfully execute by shivam")
