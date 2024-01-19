@@ -3,10 +3,10 @@ kind: Workflow                  #new type of k8s spec
 metadata:
   name: instance-restart 
 spec:
-  workflowMetadata:
-      labels:
-        workflows.argoproj.io/archive-strategy: "always"
-      suspend: true
+  # workflowMetadata:
+  #     labels:
+  #       workflows.argoproj.io/archive-strategy: "always"
+  #     suspend: true
   workflowSpec:
     ttlStrategy:
       secondsAfterCompletion: 1800
@@ -18,4 +18,22 @@ spec:
       image: python:3.8-slim
       command: [python]
       source: |
-        print("successfully execute by shivam")
+        
+        import boto3
+
+        # Create an EC2 client object
+        ec2 = boto3.client('ec2')
+
+        # Define the instance ID to restart
+        instance_id = 'i-0edd4daeb87157caf'
+
+        # Stop the instance
+        ec2.stop_instances(InstanceIds=[instance_id])
+        print(f"Instance {instance_id} stopped")
+
+        # Wait until the instance is stopped
+        ec2.get_waiter('instance_stopped').wait(InstanceIds=[instance_id])
+
+        # Start the instance
+        ec2.start_instances(InstanceIds=[instance_id])
+        print(f"Instance {instance_id} started")

@@ -2923,7 +2923,13 @@ notifications:
   # -- Configures notification services such as slack, email or custom webhook
   # @default -- See [values.yaml]
   ## For more information: https://argocd-notifications.readthedocs.io/en/stable/services/overview/
-  notifiers: {}
+  notifiers: 
+    service.webhook.gchat: |
+      url: $webhook_url
+      headers:
+      - name: "Content-Type"
+        value: "application/json"
+
     # service.slack: |
     #   token: $slack-token
 
