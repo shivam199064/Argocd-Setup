@@ -21,4 +21,4 @@ data:
     receivers:
     - name: googlechat
       googlechat_configs:
-      - url: 'https://chat.googleapis.com/v1/spaces/AAAAMzjtN-g/messages'
+      # - url: 'https://chat.googleapis.com/v1/spaces/AAAAMzjtN-g/messages'
