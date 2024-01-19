@@ -3,8 +3,15 @@ kind: Workflow                  #new type of k8s spec
 metadata:
   name: instance-restart 
 spec:
-  entrypoint: script-template
-  serviceAccountName: workflow
+  workflowMetadata:
+      labels:
+        workflows.argoproj.io/archive-strategy: "always"
+      suspend: true
+      workflowSpec:
+        ttlStrategy:
+          secondsAfterCompletion: 1800
+      entrypoint: script-template
+      serviceAccountName: workflow
   templates:
   - name: script-template
     script: 
