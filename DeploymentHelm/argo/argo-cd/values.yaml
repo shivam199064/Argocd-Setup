@@ -29,7 +29,7 @@ openshift:
 ## Custom resource configuration
 crds:
   # -- Install and upgrade CRDs
-  install: true
+  install: false
   # -- Keep CRDs on chart uninstall
   keep: true
   # -- Annotations to be added to all CRDs
@@ -267,7 +267,7 @@ configs:
     ## List of additional namespaces where applications may be created in and reconciled from.
     ## The namespace where Argo CD is installed to will always be allowed.
     ## Set comma-separated list. (e.g. app-team-one, app-team-two)
-    application.namespaces: ""
+    application.namespaces: "argocd"
 
   # Argo CD RBAC policy configuration
   ## Ref: https://github.com/argoproj/argo-cd/blob/master/docs/operator-manual/rbac.md
