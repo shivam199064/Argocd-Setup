@@ -2510,7 +2510,7 @@ applicationSet:
     # - configMapRef:
     #     name: config-map-name
     # - secretRef:
-    #     name: secret-name
+    #     name: webhook-url
 
   # -- Additional containers to be added to the ApplicationSet controller pod
   ## Note: Supports use of custom Helm templates
@@ -2873,7 +2873,7 @@ notifications:
 
   secret:
     # -- Whether helm chart creates notifications controller secret
-    create: true
+    create: false
 
     # -- key:value pairs of annotations to be added to the secret
     annotations: {}
