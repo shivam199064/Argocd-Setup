@@ -665,11 +665,11 @@ controller:
 
   # -- envFrom to pass to application controller
   # @default -- `[]` (See [values.yaml])
-  envFrom: []
+  envFrom: 
   # - configMapRef:
   #     name: config-map-name
-  # - secretRef:
-  #     name: secret-name
+  - secretRef:
+      name: argocd-notifications-secret
 
   # -- Additional containers to be added to the application controller pod
   ## Note: Supports use of custom Helm templates
