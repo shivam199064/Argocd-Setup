@@ -578,20 +578,20 @@ extraObjects:
   #       labels:
   #         app.kubernetes.io/part-of: argocd
 
-  # - apiVersion: bitnami.com/v1alpha1
-  #   kind: SealedSecret
-  #   metadata:
-  #     creationTimestamp: null
-  #     name: argocd-notifications-secret
-  #     namespace: argocd
-  #   spec:
-  #     encryptedData:
-  #       webhook-url: AgCr6ybdvVNIbkX4ILxCmeljHQjDnC8ZCLGVBlh0m/Zr7aHYxSL2ntXv1iRRQW802zoVbWeGyU2s6up/ZX5eZVZg8NvxGcLYDjCMM73LcEu4F9kBpiJL0MgY99OfaR4hu5r5mHdugLRCWGHXs7msjh8BrXwiDY8QMmWkNXZ5GFypKLSplAExLkiwMu+yh72e6/KnqG46eEpZXoCNPXnt262sB0V5mMrkamTt8nYPDTX0DwEd181Srn/jiAnJmaqvYQXvWvIG1VG1Z1yAVxEk5xYue6DVEco4rHkK8edRc4KvDl0L0ch7p1WDw8lueNX83AMK8sEyUQ72XTp2yQFbpA76nct2qlS5yzgdUByJUg6Ng75Yl30dkeI/l2I2+oIEmlqbZj/iD+VPiXoWu7Pf16M99Wq1okX++sUyhAcSTXAhKubEHje1HajmibA/m5Pq44Pt+OjObRX84rzVEBJS42cTu5an8X56E7SZKoE4I27CxQf+BaP1gjlgk8TmwpabpaYdM88GA93wpnVj6/EVCW68YesksPqgWrq3vhqliWNckEaTue0VbX3B6iTWnmajfKSkkosy57ACDklKm2qi0wxtUz3GHyUiUnbMFMcrC2Dpa0Pr6dLYQ9vh1WoUc0Djq7B/Y/OL5fHayf+RL/ijhqr7qdoXzxGqYpsRmpt0BUxxFgbeJXhUpd9sxv1QxYPnOQs0Y5O74U9JiqkyFcenT0D/hjRhIkNNCW921sHE8rVFzZtkT044o3p4JgrA1V8uhvaQyQmYLXai+TeMvrhNUZLdDYbxQxDkxtgs0YEH1x1LMVs1C9MTtLHECRrBr1QsoIRJEZM6j9XS36XG+k0Qx5K5Dzgwg5aHnzFtRFny8j2p8dePRLzLb1MJdiDYm3ny1adJoevTmzhH9Q==
-  #     template:
-  #       metadata:
-  #         creationTimestamp: null
-  #         name: argocd-notifications-secret
-  #         namespace: argocd
+    - apiVersion: bitnami.com/v1alpha1
+      kind: SealedSecret
+      metadata:
+        creationTimestamp: null
+        name: argocd-notifications-secret
+        namespace: argocd
+      spec:
+        encryptedData:
+          webhook-url: AgCr6ybdvVNIbkX4ILxCmeljHQjDnC8ZCLGVBlh0m/Zr7aHYxSL2ntXv1iRRQW802zoVbWeGyU2s6up/ZX5eZVZg8NvxGcLYDjCMM73LcEu4F9kBpiJL0MgY99OfaR4hu5r5mHdugLRCWGHXs7msjh8BrXwiDY8QMmWkNXZ5GFypKLSplAExLkiwMu+yh72e6/KnqG46eEpZXoCNPXnt262sB0V5mMrkamTt8nYPDTX0DwEd181Srn/jiAnJmaqvYQXvWvIG1VG1Z1yAVxEk5xYue6DVEco4rHkK8edRc4KvDl0L0ch7p1WDw8lueNX83AMK8sEyUQ72XTp2yQFbpA76nct2qlS5yzgdUByJUg6Ng75Yl30dkeI/l2I2+oIEmlqbZj/iD+VPiXoWu7Pf16M99Wq1okX++sUyhAcSTXAhKubEHje1HajmibA/m5Pq44Pt+OjObRX84rzVEBJS42cTu5an8X56E7SZKoE4I27CxQf+BaP1gjlgk8TmwpabpaYdM88GA93wpnVj6/EVCW68YesksPqgWrq3vhqliWNckEaTue0VbX3B6iTWnmajfKSkkosy57ACDklKm2qi0wxtUz3GHyUiUnbMFMcrC2Dpa0Pr6dLYQ9vh1WoUc0Djq7B/Y/OL5fHayf+RL/ijhqr7qdoXzxGqYpsRmpt0BUxxFgbeJXhUpd9sxv1QxYPnOQs0Y5O74U9JiqkyFcenT0D/hjRhIkNNCW921sHE8rVFzZtkT044o3p4JgrA1V8uhvaQyQmYLXai+TeMvrhNUZLdDYbxQxDkxtgs0YEH1x1LMVs1C9MTtLHECRrBr1QsoIRJEZM6j9XS36XG+k0Qx5K5Dzgwg5aHnzFtRFny8j2p8dePRLzLb1MJdiDYm3ny1adJoevTmzhH9Q==
+        template:
+          metadata:
+            creationTimestamp: null
+            name: argocd-notifications-secret
+            namespace: argocd
 
 ## Application controller
 controller:
