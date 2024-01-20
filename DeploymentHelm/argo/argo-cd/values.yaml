@@ -3348,3 +3348,7 @@ notifications:
     # For more information: https://argocd-notifications.readthedocs.io/en/stable/triggers/#default-triggers
     # defaultTriggers: |
     #   - on-sync-status-unknown
+
+
+
+
