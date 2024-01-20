@@ -5,9 +5,6 @@ metadata:
   name: {{ include "sealed-secrets.fullname" . }}
   namespace: {{ include "sealed-secrets.namespace" . }}
   labels: {{- include "sealed-secrets.labels" . | nindent 4 }}
-    {{- if .Values.commonLabels }}
-    {{- include "sealed-secrets.render" (dict "value" .Values.commonLabels "context" $) | nindent 4 }}
-    {{- end }}
   {{- if .Values.commonAnnotations }}
   annotations: {{- toYaml .Values.commonAnnotations | nindent 4 }}
   {{- end }}
@@ -126,8 +123,6 @@ spec:
           ports:
             - containerPort: 8080
               name: http
-            - containerPort: 8081
-              name: metrics
           {{- if .Values.startupProbe.enabled }}
           startupProbe: {{- include "sealed-secrets.render" (dict "value" (omit .Values.startupProbe "enabled") "context" $) | nindent 12 }}
             tcpSocket:
