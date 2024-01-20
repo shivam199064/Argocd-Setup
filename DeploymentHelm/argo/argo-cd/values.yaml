@@ -551,7 +551,7 @@ configs:
 
 # -- Array of extra K8s manifests to deploy
 ## Note: Supports use of custom Helm templates
-extraObjects: []
+extraObjects: 
   # - apiVersion: secrets-store.csi.x-k8s.io/v1
   #   kind: SecretProviderClass
   #   metadata:
@@ -577,6 +577,21 @@ extraObjects: []
   #       type: Opaque
   #       labels:
   #         app.kubernetes.io/part-of: argocd
+
+  apiVersion: bitnami.com/v1alpha1
+  kind: SealedSecret
+  metadata:
+    creationTimestamp: null
+    name: argocd-notifications-secret
+    namespace: default
+  spec:
+    encryptedData:
+      webhook-url: AgCr6ybdvVNIbkX4ILxCmeljHQjDnC8ZCLGVBlh0m/Zr7aHYxSL2ntXv1iRRQW802zoVbWeGyU2s6up/ZX5eZVZg8NvxGcLYDjCMM73LcEu4F9kBpiJL0MgY99OfaR4hu5r5mHdugLRCWGHXs7msjh8BrXwiDY8QMmWkNXZ5GFypKLSplAExLkiwMu+yh72e6/KnqG46eEpZXoCNPXnt262sB0V5mMrkamTt8nYPDTX0DwEd181Srn/jiAnJmaqvYQXvWvIG1VG1Z1yAVxEk5xYue6DVEco4rHkK8edRc4KvDl0L0ch7p1WDw8lueNX83AMK8sEyUQ72XTp2yQFbpA76nct2qlS5yzgdUByJUg6Ng75Yl30dkeI/l2I2+oIEmlqbZj/iD+VPiXoWu7Pf16M99Wq1okX++sUyhAcSTXAhKubEHje1HajmibA/m5Pq44Pt+OjObRX84rzVEBJS42cTu5an8X56E7SZKoE4I27CxQf+BaP1gjlgk8TmwpabpaYdM88GA93wpnVj6/EVCW68YesksPqgWrq3vhqliWNckEaTue0VbX3B6iTWnmajfKSkkosy57ACDklKm2qi0wxtUz3GHyUiUnbMFMcrC2Dpa0Pr6dLYQ9vh1WoUc0Djq7B/Y/OL5fHayf+RL/ijhqr7qdoXzxGqYpsRmpt0BUxxFgbeJXhUpd9sxv1QxYPnOQs0Y5O74U9JiqkyFcenT0D/hjRhIkNNCW921sHE8rVFzZtkT044o3p4JgrA1V8uhvaQyQmYLXai+TeMvrhNUZLdDYbxQxDkxtgs0YEH1x1LMVs1C9MTtLHECRrBr1QsoIRJEZM6j9XS36XG+k0Qx5K5Dzgwg5aHnzFtRFny8j2p8dePRLzLb1MJdiDYm3ny1adJoevTmzhH9Q==
+    template:
+      metadata:
+        creationTimestamp: null
+        name: argocd-notifications-secret
+        namespace: default
 
 ## Application controller
 controller:
@@ -3047,31 +3062,31 @@ notifications:
   ## For more information: https://argocd-notifications.readthedocs.io/en/stable/templates/
   templates: 
 
-  template.sync: |
-    webhook:
-      gchat:
-        method: POST
-        body: |
-          {
-          "text": "The app *{{ .app.metadata.name }}* has *successfully synced!* by *{{ .app.status.operationState.operation.initiatedBy.username}}*"
-          }
-  template.fail: |
-    webhook:
-      gchat:
-        method: POST
-        body: |
-          {
-          "text": "The app *{{ .app.metadata.name }}* has *fail!* "
-          }
-  template.out: |
-    webhook:
-      gchat:
-        method: POST
-        body: |
-          {
-          # "text": "*App:*   {{ .app.metadata.name }}\n*State:*    OutOfSync! \n*Author:*    {{ (call .repo.GetCommitMetadata .app.status.sync.revision).Author }}\n*Changes:*   {{ (call .repo.GetCommitMetadata .app.status.sync.revision).Message }}"
-          "text": "*App:*     `{{ .app.metadata.name }}`\n*State:*    <{{ trimSuffix ".git" .app.spec.source.repoURL }}/commit/{{ .app.status.sync.revision }}|OutOfSync!> \n*Author:*    `{{ (call .repo.GetCommitMetadata .app.status.sync.revision).Author }}`\n*Changes:*   `{{ (call .repo.GetCommitMetadata .app.status.sync.revision).Message }}` "
-          }
+    template.sync: |
+      webhook:
+        gchat:
+          method: POST
+          body: |
+            {
+            "text": "The app *{{ .app.metadata.name }}* has *successfully synced!* by *{{ .app.status.operationState.operation.initiatedBy.username}}*"
+            }
+    template.fail: |
+      webhook:
+        gchat:
+          method: POST
+          body: |
+            {
+            "text": "The app *{{ .app.metadata.name }}* has *fail!* "
+            }
+    template.out: |
+      webhook:
+        gchat:
+          method: POST
+          body: |
+            {
+            # "text": "*App:*   {{ .app.metadata.name }}\n*State:*    OutOfSync! \n*Author:*    {{ (call .repo.GetCommitMetadata .app.status.sync.revision).Author }}\n*Changes:*   {{ (call .repo.GetCommitMetadata .app.status.sync.revision).Message }}"
+            "text": "*App:*     `{{ .app.metadata.name }}`\n*State:*    <{{ trimSuffix ".git" .app.spec.source.repoURL }}/commit/{{ .app.status.sync.revision }}|OutOfSync!> \n*Author:*    `{{ (call .repo.GetCommitMetadata .app.status.sync.revision).Author }}`\n*Changes:*   `{{ (call .repo.GetCommitMetadata .app.status.sync.revision).Message }}` "
+            }
     # template.app-deployed: |
     #   email:
     #     subject: New version of an application {{.app.metadata.name}} is up and running.
