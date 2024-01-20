@@ -614,7 +614,7 @@ extraObjects:
   #         send: [out]
   #       - when: app.status.operationState.phase in ['Running']
   #         send: [sync]
-     
+
 
 
 ## Application controller
@@ -2964,7 +2964,7 @@ notifications:
   ## For more information: https://argocd-notifications.readthedocs.io/en/stable/services/overview/
   notifiers: 
     service.webhook.gchat: |
-      url: $webhook_url
+      url: $webhook-url
       headers:
       - name: "Content-Type"
         value: "application/json"
