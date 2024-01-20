@@ -3091,9 +3091,10 @@ notifications:
           method: POST
           body: |
             {
-            # "text": "*App:*   {{ .app.metadata.name }}\n*State:*    OutOfSync! \n*Author:*    {{ (call .repo.GetCommitMetadata .app.status.sync.revision).Author }}\n*Changes:*   {{ (call .repo.GetCommitMetadata .app.status.sync.revision).Message }}"
             "text": "*App:*     `{{ .app.metadata.name }}`\n*State:*    <{{ trimSuffix ".git" .app.spec.source.repoURL }}/commit/{{ .app.status.sync.revision }}|OutOfSync!> \n*Author:*    `{{ (call .repo.GetCommitMetadata .app.status.sync.revision).Author }}`\n*Changes:*   `{{ (call .repo.GetCommitMetadata .app.status.sync.revision).Message }}` "
             }
+
+  
     # template.app-deployed: |
     #   email:
     #     subject: New version of an application {{.app.metadata.name}} is up and running.
