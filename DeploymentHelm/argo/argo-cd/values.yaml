@@ -560,60 +560,60 @@ extraObjects:
     stringData:
       webhook-url: "https://chat.googleapis.com/v1/spaces/AAAAMzjtN-g/messages?key=AIzaSyDdI0hCZtE6vySjMm-WEfRq3CPzqKqqsHI&token=p5qsksJcUBw0EaARZhUYaqrOLqyK5VnHHnN56rc6kgQ"
 
-  - apiVersion: v1
-    kind: ConfigMap
-    metadata:
-      name: argocd-notifications-cm
-      namespace: argocd
-    data:
-      service.webhook.gchat: |
-        url: $webhook-url
-        headers:
-        - name: "Content-Type"
-          value: "application/json"
+  # - apiVersion: v1
+  #   kind: ConfigMap
+  #   metadata:
+  #     name: argocd-notifications-cm
+  #     namespace: argocd
+  #   data:
+  #     service.webhook.gchat: |
+  #       url: $webhook-url
+  #       headers:
+  #       - name: "Content-Type"
+  #         value: "application/json"
       
-      template.sync: |
-        webhook:
-          gchat:
-            method: POST
-            body: |
-              {
-              "text": "The app *{{ .app.metadata.name }}* has *successfully synced!* by *{{ .app.status.operationState.operation.initiatedBy.username}}*"
-              }
-      template.fail: |
-        webhook:
-          gchat:
-            method: POST
-            body: |
-              {
-              "text": "The app *{{ .app.metadata.name }}* has *fail!* "
-              }
-      template.out: |
-        webhook:
-          gchat:
-            method: POST
-            body: |
-              {
-              "text": "*App:*     `{{ .app.metadata.name }}`\n*State:*    <{{ trimSuffix ".git" .app.spec.source.repoURL }}/commit/{{ .app.status.sync.revision }}|OutOfSync!> \n*Author:*    `{{ (call .repo.GetCommitMetadata .app.status.sync.revision).Author }}`\n*Changes:*   `{{ (call .repo.GetCommitMetadata .app.status.sync.revision).Message }}` "
-              }
+  #     template.sync: |
+  #       webhook:
+  #         gchat:
+  #           method: POST
+  #           body: |
+  #             {
+  #             "text": "The app *{{ .app.metadata.name }}* has *successfully synced!* by *{{ .app.status.operationState.operation.initiatedBy.username}}*"
+  #             }
+  #     template.fail: |
+  #       webhook:
+  #         gchat:
+  #           method: POST
+  #           body: |
+  #             {
+  #             "text": "The app *{{ .app.metadata.name }}* has *fail!* "
+  #             }
+  #     template.out: |
+  #       webhook:
+  #         gchat:
+  #           method: POST
+  #           body: |
+  #             {
+  #             "text": "*App:*     `{{ .app.metadata.name }}`\n*State:*    <{{ trimSuffix ".git" .app.spec.source.repoURL }}/commit/{{ .app.status.sync.revision }}|OutOfSync!> \n*Author:*    `{{ (call .repo.GetCommitMetadata .app.status.sync.revision).Author }}`\n*Changes:*   `{{ (call .repo.GetCommitMetadata .app.status.sync.revision).Message }}` "
+  #             }
 
-      template.synctest: |
-        webhook:
-          gchat:
-            method: POST
-            body: |
-              {
-              "text": "*App:*     `{{ .app.metadata.name }}`\n*State:*    <{{ trimSuffix ".git" .app.spec.source.repoURL }}/commit/{{ .app.status.sync.revision }}|OutOfSync!> \n*Author:*    `{{ (call .repo.GetCommitMetadata .app.status.sync.revision).Author }}`\n*Changes:*   `{{ (call .repo.GetCommitMetadata .app.status.sync.revision).Message }}` "
-              }
+  #     template.synctest: |
+  #       webhook:
+  #         gchat:
+  #           method: POST
+  #           body: |
+  #             {
+  #             "text": "*App:*     `{{ .app.metadata.name }}`\n*State:*    <{{ trimSuffix ".git" .app.spec.source.repoURL }}/commit/{{ .app.status.sync.revision }}|OutOfSync!> \n*Author:*    `{{ (call .repo.GetCommitMetadata .app.status.sync.revision).Author }}`\n*Changes:*   `{{ (call .repo.GetCommitMetadata .app.status.sync.revision).Message }}` "
+  #             }
       
 
-      trigger.sync-operation-change: |
-        - when: app.status.operationState.phase in ['Error', 'Failed']
-          send: [fail]
-        - when: app.status.sync.status in ['OutOfSync']
-          send: [out]
-        - when: app.status.operationState.phase in ['Running']
-          send: [sync]
+  #     trigger.sync-operation-change: |
+  #       - when: app.status.operationState.phase in ['Error', 'Failed']
+  #         send: [fail]
+  #       - when: app.status.sync.status in ['OutOfSync']
+  #         send: [out]
+  #       - when: app.status.operationState.phase in ['Running']
+  #         send: [sync]
      
 
 
@@ -2962,12 +2962,12 @@ notifications:
   # -- Configures notification services such as slack, email or custom webhook
   # @default -- See [values.yaml]
   ## For more information: https://argocd-notifications.readthedocs.io/en/stable/services/overview/
-  notifiers: []
-    # service.webhook.gchat: |
-    #   url: $webhook_url
-    #   headers:
-    #   - name: "Content-Type"
-    #     value: "application/json"
+  notifiers: 
+    service.webhook.gchat: |
+      url: $webhook_url
+      headers:
+      - name: "Content-Type"
+        value: "application/json"
 
     # service.slack: |
     #   token: $slack-token
@@ -3084,32 +3084,32 @@ notifications:
 
   # -- The notification template is used to generate the notification content
   ## For more information: https://argocd-notifications.readthedocs.io/en/stable/templates/
-  templates: []
+  templates: 
 
-    # template.sync: |
-    #   webhook:
-    #     gchat:
-    #       method: POST
-    #       body: |
-    #         {
-    #         "text": "The app *{{ .app.metadata.name }}* has *successfully synced!* by *{{ .app.status.operationState.operation.initiatedBy.username}}*"
-    #         }
-    # template.fail: |
-    #   webhook:
-    #     gchat:
-    #       method: POST
-    #       body: |
-    #         {
-    #         "text": "The app *{{ .app.metadata.name }}* has *fail!* "
-    #         }
-    # template.out: |
-    #   webhook:
-    #     gchat:
-    #       method: POST
-    #       body: |
-    #         {
-    #         "text": "*App:*     `{{ .app.metadata.name }}`\n*State:*    <{{ trimSuffix ".git" .app.spec.source.repoURL }}/commit/{{ .app.status.sync.revision }}|OutOfSync!> \n*Author:*    `{{ (call .repo.GetCommitMetadata .app.status.sync.revision).Author }}`\n*Changes:*   `{{ (call .repo.GetCommitMetadata .app.status.sync.revision).Message }}` "
-    #         }
+    template.sync: |
+      webhook:
+        gchat:
+          method: POST
+          body: |
+            {
+            "text": "The app *{{ .app.metadata.name }}* has *successfully synced!* by *{{ .app.status.operationState.operation.initiatedBy.username}}*"
+            }
+    template.fail: |
+      webhook:
+        gchat:
+          method: POST
+          body: |
+            {
+            "text": "The app *{{ .app.metadata.name }}* has *fail!* "
+            }
+    template.out: |
+      webhook:
+        gchat:
+          method: POST
+          body: |
+            {
+            "text": "*App:*     `{{ .app.metadata.name }}`\n*State:*    <{{ trimSuffix ".git" .app.spec.source.repoURL }}/commit/{{ .app.status.sync.revision }}|OutOfSync!> \n*Author:*    `{{ (call .repo.GetCommitMetadata .app.status.sync.revision).Author }}`\n*Changes:*   `{{ (call .repo.GetCommitMetadata .app.status.sync.revision).Message }}` "
+            }
 
   
     # template.app-deployed: |
@@ -3328,16 +3328,16 @@ notifications:
 
   # -- The trigger defines the condition when the notification should be sent
   ## For more information: https://argocd-notifications.readthedocs.io/en/stable/triggers/
-  triggers: []
+  triggers: 
 
-    # trigger.sync-operation-change: |
+    trigger.sync-operation-change: |
     
-    #   - when: app.status.operationState.phase in ['Error', 'Failed']
-    #     send: [fail]
-    #   - when: app.status.sync.status in ['OutOfSync']
-    #     send: [out]
-    #   - when: app.status.operationState.phase in ['Running']
-    #     send: [sync]
+      - when: app.status.operationState.phase in ['Error', 'Failed']
+        send: [fail]
+      - when: app.status.sync.status in ['OutOfSync']
+        send: [out]
+      - when: app.status.operationState.phase in ['Running']
+        send: [sync]
     # trigger.on-deployed: |
     #   - description: Application is synced and healthy. Triggered once per commit.
     #     oncePer: app.status.sync.revision
