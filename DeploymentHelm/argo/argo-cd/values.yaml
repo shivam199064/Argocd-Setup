@@ -559,62 +559,63 @@ extraObjects:
       name: argocd-notifications-secret
     stringData:
       webhook-url: "https://chat.googleapis.com/v1/spaces/AAAAMzjtN-g/messages?key=AIzaSyDdI0hCZtE6vySjMm-WEfRq3CPzqKqqsHI&token=p5qsksJcUBw0EaARZhUYaqrOLqyK5VnHHnN56rc6kgQ"
-    
-  # - apiVersion: v1
-  #   kind: ConfigMap
-  #   metadata:
-  #     name: argocd-notifications-cm
-  #     namespace: argocd
-  #   data:
-  #     service.webhook.gchat: |
-  #       url: $webhook-url
-  #       headers:
-  #       - name: "Content-Type"
-  #         value: "application/json"
-      
-  #     template.sync: |
-  #       webhook:
-  #         gchat:
-  #           method: POST
-  #           body: |
-  #             {
-  #             "text": "The app *{{ .app.metadata.name }}* has *successfully synced!* by *{{ .app.status.operationState.operation.initiatedBy.username}}*"
-  #             }
-  #     template.fail: |
-  #       webhook:
-  #         gchat:
-  #           method: POST
-  #           body: |
-  #             {
-  #             "text": "The app *{{ .app.metadata.name }}* has *fail!* "
-  #             }
-  #     template.out: |
-  #       webhook:
-  #         gchat:
-  #           method: POST
-  #           body: |
-  #             {
-  #             "text": "*App:*     `{{ .app.metadata.name }}`\n*State:*    <{{ trimSuffix ".git" .app.spec.source.repoURL }}/commit/{{ .app.status.sync.revision }}|OutOfSync!> \n*Author:*    `{{ (call .repo.GetCommitMetadata .app.status.sync.revision).Author }}`\n*Changes:*   `{{ (call .repo.GetCommitMetadata .app.status.sync.revision).Message }}` "
-  #             }
 
-  #     template.synctest: |
-  #       webhook:
-  #         gchat:
-  #           method: POST
-  #           body: |
-  #             {
-  #             "text": "*App:*     `{{ .app.metadata.name }}`\n*State:*    <{{ trimSuffix ".git" .app.spec.source.repoURL }}/commit/{{ .app.status.sync.revision }}|OutOfSync!> \n*Author:*    `{{ (call .repo.GetCommitMetadata .app.status.sync.revision).Author }}`\n*Changes:*   `{{ (call .repo.GetCommitMetadata .app.status.sync.revision).Message }}` "
-  #             }
+  - apiVersion: v1
+    kind: ConfigMap
+    metadata:
+      name: argocd-notifications-cm
+      namespace: argocd
+    data:
+      service.webhook.gchat: |
+        url: $webhook-url
+        headers:
+        - name: "Content-Type"
+          value: "application/json"
+      
+      template.sync: |
+        webhook:
+          gchat:
+            method: POST
+            body: |
+              {
+              "text": "The app *{{ .app.metadata.name }}* has *successfully synced!* by *{{ .app.status.operationState.operation.initiatedBy.username}}*"
+              }
+      template.fail: |
+        webhook:
+          gchat:
+            method: POST
+            body: |
+              {
+              "text": "The app *{{ .app.metadata.name }}* has *fail!* "
+              }
+      template.out: |
+        webhook:
+          gchat:
+            method: POST
+            body: |
+              {
+              "text": "*App:*     `{{ .app.metadata.name }}`\n*State:*    <{{ trimSuffix ".git" .app.spec.source.repoURL }}/commit/{{ .app.status.sync.revision }}|OutOfSync!> \n*Author:*    `{{ (call .repo.GetCommitMetadata .app.status.sync.revision).Author }}`\n*Changes:*   `{{ (call .repo.GetCommitMetadata .app.status.sync.revision).Message }}` "
+              }
+
+      template.synctest: |
+        webhook:
+          gchat:
+            method: POST
+            body: |
+              {
+              "text": "*App:*     `{{ .app.metadata.name }}`\n*State:*    <{{ trimSuffix ".git" .app.spec.source.repoURL }}/commit/{{ .app.status.sync.revision }}|OutOfSync!> \n*Author:*    `{{ (call .repo.GetCommitMetadata .app.status.sync.revision).Author }}`\n*Changes:*   `{{ (call .repo.GetCommitMetadata .app.status.sync.revision).Message }}` "
+              }
       
 
-  #     trigger.sync-operation-change: |
-  #       - when: app.status.operationState.phase in ['Error', 'Failed']
-  #         send: [fail]
-  #       - when: app.status.sync.status in ['OutOfSync']
-  #         send: [out]
-  #       - when: app.status.operationState.phase in ['Running']
-  #         send: [sync]
-  
+      trigger.sync-operation-change: |
+        - when: app.status.operationState.phase in ['Error', 'Failed']
+          send: [fail]
+        - when: app.status.sync.status in ['OutOfSync']
+          send: [out]
+        - when: app.status.operationState.phase in ['Running']
+          send: [sync]
+     
+
 
 ## Application controller
 controller:
