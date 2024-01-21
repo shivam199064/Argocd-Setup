@@ -565,7 +565,7 @@ extraObjects:
     metadata:
       creationTimestamp: null
       name: argocd-notifications-secret
-      namespace: default
+      namespace: argocd
     spec:
       encryptedData:
         webhook-url: AgB3COUiWv54olS1HZncsx7+ZLoUDjNbpfYmV40W0bGUTI3ENSeQJ5zaWLQkofTavV7+7Sa7fzCWX3zT7+tF1ZWMabCdQ7VmMGPCF1YRaSqsK27Ow1yfqU1x5qt4KQRzJDvDy2i/hvx6b6PGv09Ghjta1HSv7BKpQurRhveo+hjr/Tqj3dClm8rkCoRDDYuG5XXEPErVJNy3nmzWG01XCh9m0YuZgIJf24wJS0QjnScCkByPgDVGU1iKKm8rhB75ugKWmo53xL+E6CC1+dEGj/Z911ZQ0Qei58+u0GhrgRyULDauG2wyCADFzV4Amtf4MQput56DTvcA1QUYV2FEyHOT6v+BnYPIJA8DRnctf6OqldJO0+CT4zYlOZtZ194OLDrE6MIR06F7A2UGiF1cMdCwkWpT4EJwwJXqbb274xpKNkVha58LjSs26doDu2dQdMJ5zmtP6NCoTYGYKdDzBjzvgdmmhkfnjawGOOETjkWQ1ZiibFgGP61cgUxcNAmX8oclpTAp5zkaZ+v6VQiAT3xL0oZ7a74bQzM+FfzvaCypXpgD+GTSn8dHPH1AC5jqWqS/rmOL6DYDm3NnAgJgmi25YNPD58xoO+dOQDodmJfSO3RNi5kt+F1JUzty25+QAdJj75SSECpxsLXBY5ilisBzgJgrnOsBf559CsiPD3c5KEae2teOTx/womPbaiNL79ERTc72jRkRF+H0ROilFZ0YnKeUue7yDEF9okQlSr7ZilbJ/1F87pRV9OpsWO6n26FFhvOiDun9W0M0UvKZnXIz+O4SbtWV7i37P3E95zgrREjZ1ST2WUom8lC2pMVuhZkto1yHHaM+LxSMH5DaYywoP+rbob9PD9LtGfrCmTwjQJ8Ef1/e4R6PMDOaakbdgmq8CNU1Rtzdow==
@@ -573,7 +573,7 @@ extraObjects:
         metadata:
           creationTimestamp: null
           name: argocd-notifications-secret
-          namespace: default
+          namespace: argocd
   # - apiVersion: v1
   #   kind: ConfigMap
   #   metadata:
