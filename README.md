@@ -30,3 +30,7 @@
    ### kubectl create secret generic secretname --from-literal=webhook-url="https://url"  --dry-run=client -o yaml |kubeseal --namespace=argocd -o yaml
 
 
+# ArgoCD Image Updater
+
+   ## play with cli
+   #### kubectl -n argocd exec -it deploy/argocd-argocd-image-updater -- argocd-image-updater  version
