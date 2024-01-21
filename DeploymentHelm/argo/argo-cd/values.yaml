@@ -552,14 +552,6 @@ configs:
 # -- Array of extra K8s manifests to deploy
 ## Note: Supports use of custom Helm templates
 extraObjects: 
-
-  # - apiVersion: v1
-  #   kind: Secret
-  #   metadata:
-  #     name: argocd-notifications-secret
-  #   stringData:
-  #     webhook-url: "https://chat.googleapis.com/v1/spaces/AAAAMzjtN-g/messages?key=AIzaSyDdI0hCZtE6vySjMm-WEfRq3CPzqKqqsHI&token=p5qsksJcUBw0EaARZhUYaqrOLqyK5VnHHnN56rc6kgQ"
-
   - apiVersion: bitnami.com/v1alpha1
     kind: SealedSecret
     metadata:
@@ -568,66 +560,12 @@ extraObjects:
       namespace: argocd
     spec:
       encryptedData:
-        webhook-url: AgAndx5gc2KH/Qaj5PnLmxNR/6u90E/futGJkLFiOjb+rc9HDN9hPa5Egpu69v3qnSG4D+wJA4oB05UcCYvefVJwHRSj5NyGwjthIG8nCGP3uG3QqNU8GpUgATCToz0nhA8JB+gqzJi/Euw5LeGAlqj5X/LVOKwAL0+tVaipbXr7X+nMrZdVNFJYX6Hk/uSPvt0BN0ym3lwwJWDRrsQABu7X9WPQh/g6iurM0Yq1wLRJQ9Pqc5LfL5Lc7A2nH11Tk65PDM+19kRLE7cnYc/q5Mk+ElFiQwGp2DriPrcEwHU21zH9uvlYeyqVqvi8Tf6/QULVRHUdeJRs7Wm1sKi9QHjU2lJ6Qm/H+hwqReR4KIQZGabejET9Qe/mYcoUY1ZWKjXA+d8wh7zgao32W/zjQGMM/0MHTlSidABU/haAvzF54LXcF3tAdBKqfdzq1cuIuUH1yhEI20n1JKBEvB2sasnHTPLIbp0LHSZMPpLhFoZY+SqSdE8IhZXA4abOB1SJk2eVjU9PAewD6eOpSZc13yJGagAEUM+M2shs7812IxPR6VKYcrn9YGYzEMkKJTrhQ+gxr2TNgTKvtaJ1Fw9v/bItKpDig4U5XJGVJYhjsCbGGbCgY9ZtKGjneIqvxHcK40IsJknr8oveK5f9Q6Dz/9aI9anym+b99/FblO21+butt5u8jc3zjijV+KhbGbqSChwMQ4ve2dJZubcDJyXkCseYZ0EuLCUyTH9DcBftV8zE0ZR+QfEDlkWuwu4s7pV4BNVdUkYkvvVmhLAjXci53RNktNmSxEtZSYjtdmOlS4zl3/tzkuOgfP9u6oOgSv++nAqVlz8Bd3w4xAPFuTr95ojRC6iBw9YR9h8LK2EoAJra259jcEFlgS4LNzM3EQL3a6ooQwiAo/VuBg==
+        webhook-url: AgAOB3onbLO5YRMpAee2ZEiHwO9xoliO8nwSZjQCdoJLK81YLeMaqm4s3ZAmvQx2ZkcrPATy68tsqzMw2mSnRqUgrUtOMfAk38X93QA6pW+pWZabAP+egaMI64U9epDk/y4VTUwFZmCrfXuvdX1X9guCoL5ilgNSWGVNBSkFLDECTnGVfke3OF0S18ta5iH2/tOgXSOwB2JNs4C5IvYHJPXwsoyx2yzs3eoduVFMqv6NqXjrLeMBg6m+fVXpEvyLmeHbNhOVokRjmnGoTcfSRQybGPx2ImXyAQVPAF9Gh7U9O2GTG9MahUczVHR4vcmMy19W1+ZwK8XJ5+3sXWmoCkz5Xoq9UWVp4wDdAilkKPqPGG6R3Bf4ZMJCYzbaYWELnHmpZufpQm2dLscltofVyYS0lfSxAf4WunJUhMwQU/nOQPWFB8YP4A2vbsYcT4J6rWIMAZJ85yXwYxyO1aYWqllXbfXtXbdLDvOR1SCNFB343L1Ll1QNaWE9peh9SR9Q3tQGC3yx1HXNtIV4PiQI8go/Xn8vvzRVMZVIuGcgkGzb22lfXeaHbSQFpnruXLvzSCz7WBTUj2xUxK/2ax1TvolpxEdiNPAOUAEy9C9NBOvwkqrtG6zjVcAa04udQqAO0+E9XHgT0IHDQLYezpfQrI/zDLxI6TI3ghv9JGds6APf2Z7spjy6XWDLc1ex7ofKZOdGDAEOiwv07IkEUloIOW0UfKBubD3eWEi5KuzMZGLAjm/cdHTjcvFgXCTizRhFq/4j9LjXRBoYlIGreA3il4znRJCBHZsN0GcaHHT8LNbY1bgfHUbusPUaSIqBNr75DAcWTgDFf21PK0NNc94Qz0H47IOm44fIAphQxDkAeeYs7m+vS4RhH3CimxUj3TKN8d3YKMuFXByJ/Q==
       template:
         metadata:
           creationTimestamp: null
           name: argocd-notifications-secret
           namespace: argocd
-  # - apiVersion: v1
-  #   kind: ConfigMap
-  #   metadata:
-  #     name: argocd-notifications-cm
-  #     namespace: argocd
-  #   data:
-  #     service.webhook.gchat: |
-  #       url: $webhook-url
-  #       headers:
-  #       - name: "Content-Type"
-  #         value: "application/json"
-      
-  #     template.sync: |
-  #       webhook:
-  #         gchat:
-  #           method: POST
-  #           body: |
-  #             {
-  #             "text": "The app *{{ .app.metadata.name }}* has *successfully synced!* by *{{ .app.status.operationState.operation.initiatedBy.username}}*"
-  #             }
-  #     template.fail: |
-  #       webhook:
-  #         gchat:
-  #           method: POST
-  #           body: |
-  #             {
-  #             "text": "The app *{{ .app.metadata.name }}* has *fail!* "
-  #             }
-  #     template.out: |
-  #       webhook:
-  #         gchat:
-  #           method: POST
-  #           body: |
-  #             {
-  #             "text": "*App:*     `{{ .app.metadata.name }}`\n*State:*    <{{ trimSuffix ".git" .app.spec.source.repoURL }}/commit/{{ .app.status.sync.revision }}|OutOfSync!> \n*Author:*    `{{ (call .repo.GetCommitMetadata .app.status.sync.revision).Author }}`\n*Changes:*   `{{ (call .repo.GetCommitMetadata .app.status.sync.revision).Message }}` "
-  #             }
-
-  #     template.synctest: |
-  #       webhook:
-  #         gchat:
-  #           method: POST
-  #           body: |
-  #             {
-  #             "text": "*App:*     `{{ .app.metadata.name }}`\n*State:*    <{{ trimSuffix ".git" .app.spec.source.repoURL }}/commit/{{ .app.status.sync.revision }}|OutOfSync!> \n*Author:*    `{{ (call .repo.GetCommitMetadata .app.status.sync.revision).Author }}`\n*Changes:*   `{{ (call .repo.GetCommitMetadata .app.status.sync.revision).Message }}` "
-  #             }
-      
-
-  #     trigger.sync-operation-change: |
-  #       - when: app.status.operationState.phase in ['Error', 'Failed']
-  #         send: [fail]
-  #       - when: app.status.sync.status in ['OutOfSync']
-  #         send: [out]
-  #       - when: app.status.operationState.phase in ['Running']
-  #         send: [sync]
 
 
 
