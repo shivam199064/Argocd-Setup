@@ -570,46 +570,21 @@ extraObjects:
         syncOptions:
           - CreateNamespace=true
     
-  # - apiVersion: bitnami.com/v1alpha1 
-  #   kind: SealedSecret
-  #   metadata:
-  #     creationTimestamp: null
-  #     name: argocd-notifications-secret
-  #     namespace: argocd
-  #   spec:
-  #     encryptedData:
-  #       webhook-url: AgBqG2uY+JeODbX+DoEAkd2l7TO9qVipys1LvsXqWDMHrwBnDCpXslEucmINl4zVxfRjq73gKlE9AnxwFtKJFJckr8QIFgNmsBRYUTlm5RgtjPWJSlAQ2hjb/snlY11ZCNfHf55UGZiSmZsVdr+iUPu8QjdJuNbw+3GV5YbQtSxvIo/Gv5rIoyOoi1axVEAHcXl3TURvbng0rMnyC6Q/CvDHpHqPmVuutlXR+P7l8BW3yygTZgsqSs+P0uPfqIe2K2QouOiVY8g2OiwQ3J97vJfu7wDZYcFM1UMQc4tmZRIKLRma7skCobWroRAYpE2HoOPgBAhOPhozgPKl7u1P6BNfTvBLmfUIEeImofADRnUBpGkeDKyB5hzbtRe/eAluHItvNbpIR8QL+v2A8CUZK28QEdh7PcDUQ7EuobcKtN5uccffwVzQqFZ4A9X1v9eCJOPiKAnAG1Sf36q3UVzqVitRbZsKTqvA2QwAhRUbGA+/J71onO6bQdY5xz+7TMW56jAbyLkc5bbY/tKyG0lvBPp95cKXYcCWmVs20o8uKVvfW1w3AFwsUUY3M4oQYiQVZuAz9rs1fA1oQ+IekYq0L9PPIvqh6ehMxDayWOsSeLU5t3TKpbRxbxKi5sFgHX715RGJGN6OolFTcJ8ZuZmkd6HGjlyzaG0DuT4fnrCpkNluaYO8uEf8knwQzu1U+2k2Nrw+JEWQdFc8zaJwDMBcO0yLdXeVWhb8k3udCPGYSlg3L1IowHo05/ziRStR4E+xETwidCnkUvvCjJ+n16mbpODvGVfQDimLzbK7fyEbPKh6epZRsLlMOEN4yWpDqgWL3o8ir9Ktrl8ZRw+AOXKUjnyCnzYDA3BkdRMjde/aO1cBI5XPOzd9NAV2niRebYiHSpbwFDA6EACy4g==
-  #     template:
-  #       metadata:
-  #         creationTimestamp: null
-  #         name: argocd-notifications-secret
-  #         namespace: argocd
-  # - apiVersion: secrets-store.csi.x-k8s.io/v1
-  #   kind: SecretProviderClass
-  #   metadata:
-  #     name: argocd-secrets-store
-  #   spec:
-  #     provider: aws
-  #     parameters:
-  #       objects: |
-  #         - objectName: "argocd"
-  #           objectType: "secretsmanager"
-  #           jmesPath:
-  #               - path: "client_id"
-  #                 objectAlias: "client_id"
-  #               - path: "client_secret"
-  #                 objectAlias: "client_secret"
-  #     secretObjects:
-  #     - data:
-  #       - key: client_id
-  #         objectName: client_id
-  #       - key: client_secret
-  #         objectName: client_secret
-  #       secretName: argocd-secrets-store
-  #       type: Opaque
-  #       labels:
-  #         app.kubernetes.io/part-of: argocd
-
+  - apiVersion: bitnami.com/v1alpha1 
+    kind: SealedSecret
+    metadata:
+      creationTimestamp: null
+      name: argocd-notifications-secret
+      namespace: argocd
+    spec:
+      encryptedData:
+        webhook-url: AgAsRWnYGkwLM6F4zEctMMjgk2aKYxUeuwX/9Qwh/HyZM+KxzHNxi0qpsSHlurRVq5BrcwbvU/c0JfThqN7wfg6OP+Ro7fayUlYi2Qfh/rJkOV8hjS5MrOZ+6WIdpTWrrr9EUh0HPmz14s0raL4SaPtM65xLMASosrzWM8T2fjIteglbnKKcgPMMdlEipiWhw+Nkxz+uEYFyQNbscmGs8fsdFHDFBNg1BEy/z4bG0HCkCXN6O8euKTSM0uIvE0xEfH1KCvnlfETSZnacqXpO0spSBpRJmnIel+BVDpV6Be+LuLqadKRDovO0h5nGfy4C2ZPm8qNn4EQDQpIxacc2GYEGhFHgv33mIgks9dSiAiJOJQB5QWYLAkKG7kKRhlQdJ3d0Ykdvhc920Jf1tGc+m+vQtFR33u9eR3XZu+waCC4vnBKe59CwzWRpYXsuLdDAXPg/oFa38bni/jKv8kGqzrq1Pw0vrUfS2wthfI3L5zSKy8Js/UtFYMQtIlkF+oI2Y4dd/UVwu47TcJ3r4LP+YR+6fHhCFlXwpSlTQpYAeodGXf/mGUeeJh0p5Z/NCfb/naXJFex8UhqOiTX2hXmPLf/7oNE4yGKlH/8hAizmyYsLP6y+92OMV6P5FdUbRi/X4exSyadYz0d4REPRXIRquWFxPCWCw0mYiC9ameoXxH7m4YhhJ3t2Jq4ohW5gTuVuJEAytShPA9rulPZuMfdK4rtcCRBILGCwtfz3dPyKyiSb+vRlFQXymN7NBuQAUHvvfvgukPPZ6tZrQyO/tMykyvRPH/twQSW0zv8Ta64sTD+tHvmz1F8aXdSeTKcoCWCTeMOSB9vziHz+vAAXvTMnoKzEyO/iEZ9F5XYW+mSHuBcobylmUTpxZRXyXdnVRQJzYe5Ys9MNKEM6+Q==
+      template:
+        metadata:
+          creationTimestamp: null
+          name: argocd-notifications-secret
+          namespace: argocd
+  
 ## Application controller
 controller:
   # -- Application controller name string
