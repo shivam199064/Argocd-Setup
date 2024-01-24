@@ -570,7 +570,7 @@ extraObjects:
         syncOptions:
           - CreateNamespace=true
     
-  - apiVersion: bitnami.com/v1alpha1 
+  - apiVersion: bitnami.com/v1alpha1
     kind: SealedSecret
     metadata:
       creationTimestamp: null
@@ -578,7 +578,7 @@ extraObjects:
       namespace: argocd
     spec:
       encryptedData:
-        webhook-url: AgAsRWnYGkwLM6F4zEctMMjgk2aKYxUeuwX/9Qwh/HyZM+KxzHNxi0qpsSHlurRVq5BrcwbvU/c0JfThqN7wfg6OP+Ro7fayUlYi2Qfh/rJkOV8hjS5MrOZ+6WIdpTWrrr9EUh0HPmz14s0raL4SaPtM65xLMASosrzWM8T2fjIteglbnKKcgPMMdlEipiWhw+Nkxz+uEYFyQNbscmGs8fsdFHDFBNg1BEy/z4bG0HCkCXN6O8euKTSM0uIvE0xEfH1KCvnlfETSZnacqXpO0spSBpRJmnIel+BVDpV6Be+LuLqadKRDovO0h5nGfy4C2ZPm8qNn4EQDQpIxacc2GYEGhFHgv33mIgks9dSiAiJOJQB5QWYLAkKG7kKRhlQdJ3d0Ykdvhc920Jf1tGc+m+vQtFR33u9eR3XZu+waCC4vnBKe59CwzWRpYXsuLdDAXPg/oFa38bni/jKv8kGqzrq1Pw0vrUfS2wthfI3L5zSKy8Js/UtFYMQtIlkF+oI2Y4dd/UVwu47TcJ3r4LP+YR+6fHhCFlXwpSlTQpYAeodGXf/mGUeeJh0p5Z/NCfb/naXJFex8UhqOiTX2hXmPLf/7oNE4yGKlH/8hAizmyYsLP6y+92OMV6P5FdUbRi/X4exSyadYz0d4REPRXIRquWFxPCWCw0mYiC9ameoXxH7m4YhhJ3t2Jq4ohW5gTuVuJEAytShPA9rulPZuMfdK4rtcCRBILGCwtfz3dPyKyiSb+vRlFQXymN7NBuQAUHvvfvgukPPZ6tZrQyO/tMykyvRPH/twQSW0zv8Ta64sTD+tHvmz1F8aXdSeTKcoCWCTeMOSB9vziHz+vAAXvTMnoKzEyO/iEZ9F5XYW+mSHuBcobylmUTpxZRXyXdnVRQJzYe5Ys9MNKEM6+Q==
+        webhook-url: AgBRBJBH5SKnbqwsz4N+V+FORmij7YjHZbdcAAEZ+OtNkhXosgDwDq7vhc/xDLK02EtGxg3rj2zCxcc+xh96aMlITy+bJrX7qILuXRl8nUsLewTAAZo5rnuSt24Y3tDuEvETw+FXaRXlfbcU749fNGii8lDQxZUBdZEILJKiM9VYB3osGlbP53vdua9yVbBXr0C9ASf1FPCtkYcMzbx6c/kWLAcNN8Mr9h9biafULadeon7y9qIz5Lfzda8KTTQjesxoWvKdmB0ojBP0/F5wzrwjt8fsjvdhaF7ea9wceNutS96Kwu+LuSQx1zzrwOP7ZC5L2/eaT9q3kHZYjWTNuTWi9lUzsw2tncTFm4cNiLsr1wh1mYmed4QrjJPOeHMJpeJZ6TL/mRawQsuJbKJexNBPXbUj9+FOg6voC0mD+tZRiT/SxN4Gj7PYAn8zmgvPqqB4fhaHA0VB62ASLaqREcoTumkBHAEAsPG6ampl2Ho81w0uvUiXTRRO8+Zi6nivgzd1u10iqQu+nHfC1h+pTYNHr5OdS+DKwhEJvE8hfOWfMOTIjN2eGpwH1PUOGIjBffYAtJiRQfuBqRPkE1pCX3OsW2J90uS3AgHchJ0bCFGKRLYImTZmkIVaxSgHYY8OU6UWZumU6otrW7xdcilP1tGMBl4oCFIeR7FtJVDtJIMHkz+dDyDNaUvlrO9coFSGXMIU8fjlAzStWqdZJh4YLDxK7krH93KA3gR1qmH5+KJlBYkk3g0Yd8xlAAnhlT+xXw74AtaASkcSGTtUMbdl4TIrzB+PlJSmFWK6dEdE/Q4CSdo4kNthUo44XtVLlP0NfpLkj8M9Hj0MY0HtqSnWM4GJeoYTX0SlFTmrPENB9mac8+K9IYMWOe08+h2orYzmhhQKXBD3FXpxVw==
       template:
         metadata:
           creationTimestamp: null
