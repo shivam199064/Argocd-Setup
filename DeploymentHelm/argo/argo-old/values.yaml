@@ -12,8 +12,12 @@ kubeVersionOverride: ""
 # If you want to template helm charts but cannot access k8s API server
 # you can set api versions here
 apiVersionOverrides:
+  # -- String to override apiVersion of cert-manager resources rendered by this helm chart
+  certmanager: "" # cert-manager.io/v1
   # -- String to override apiVersion of GKE resources rendered by this helm chart
   cloudgoogle: "" # cloud.google.com/v1
+  # -- String to override apiVersion of autoscaling rendered by this helm chart
+  autoscaling: "" # autoscaling/v2
 
 # -- Create aggregated roles that extend existing cluster roles to interact with argo-cd resources
 ## Ref: https://kubernetes.io/docs/reference/access-authn-authz/rbac/#aggregated-clusterroles
@@ -263,12 +267,6 @@ configs:
     # -- Enables use of the Progressive Syncs capability
     applicationsetcontroller.enable.progressive.syncs: false
 
-    # -- Enables [Applications in any namespace]
-    ## List of additional namespaces where applications may be created in and reconciled from.
-    ## The namespace where Argo CD is installed to will always be allowed.
-    ## Set comma-separated list. (e.g. app-team-one, app-team-two)
-    application.namespaces: "argocd"
-
   # Argo CD RBAC policy configuration
   ## Ref: https://github.com/argoproj/argo-cd/blob/master/docs/operator-manual/rbac.md
   rbac:
@@ -291,7 +289,7 @@ configs:
     #  p, subject, resource, action, object, effect
     # Role definitions and bindings are in the form:
     #  g, subject, inherited-subject
-    # policy.csv: |
+    # policy.csv |
     #   p, role:org-admin, applications, *, */*, allow
     #   p, role:org-admin, clusters, get, *, allow
     #   p, role:org-admin, repositories, *, *, allow
@@ -332,7 +330,7 @@ configs:
       [ssh.github.com]:443 ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCj7ndNxQowgcQnjshcLrqPEiiphnt+VTTvDP6mHBL9j1aNUkY4Ue1gvwnGLVlOhGeYrnZaMgRK6+PKCUXaDbC7qtbW8gIkhL7aGCsOr/C56SJMy/BCZfxd1nWzAOxSDPgVsmerOBYfNqltV9/hWCqBywINIR+5dIg6JTJ72pcEpEjcYgXkE2YEFXV1JHnsKgbLWNlhScqb2UmyRkQyytRLtL+38TGxkxCflmO+5Z8CSSNY7GidjMIZ7Q4zMjA2n1nGrlTDkzwDCsw+wqFPGQA179cnfGWOWRVruj16z6XyvxvjJwbz0wQZ75XK5tKSb7FNyeIEs4TT4jk+S4dhPeAUC5y+bDYirYgM4GC7uEnztnZyaVWQ7B381AK4Qdrwt51ZqExKbQpTUNn+EjqoTwvqNj4kqx5QUCI0ThS/YkOxJCXmPUWZbhjpCg56i+2aB6CmK2JGhn57K5mj0MNdBXA4/WnwH6XoPWJzK5Nyu2zB3nAZp+S5hpQs+p1vN1/wsjk=
       bitbucket.org ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBPIQmuzMBuKdWeF4+a2sjSSpBK0iqitSQ+5BM9KhpexuGt20JpTVM7u5BDZngncgrqDMbWdxMWWOGtZ9UgbqgZE=
       bitbucket.org ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIazEu89wgQZ4bqs3d63QSMzYVa0MuJ2e2gKTKqu+UUO
-      bitbucket.org ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDQeJzhupRu0u0cdegZIa8e86EG2qOCsIsD1Xw0xSeiPDlCr7kq97NLmMbpKTX6Esc30NuoqEEHCuc7yWtwp8dI76EEEB1VqY9QJq6vk+aySyboD5QF61I/1WeTwu+deCbgKMGbUijeXhtfbxSxm6JwGrXrhBdofTsbKRUsrN1WoNgUa8uqN1Vx6WAJw1JHPhglEGGHea6QICwJOAr/6mrui/oB7pkaWKHj3z7d1IC4KWLtY47elvjbaTlkN04Kc/5LFEirorGYVbt15kAUlqGM65pk6ZBxtaO3+30LVlORZkxOh+LKL/BvbZ/iRNhItLqNyieoQj/uh/7Iv4uyH/cV/0b4WDSd3DptigWq84lJubb9t/DnZlrJazxyDCulTmKdOR7vs9gMTo+uoIrPSb8ScTtvw65+odKAlBj59dhnVp9zd7QUojOpXlL62Aw56U4oO+FALuevvMjiWeavKhJqlR7i5n9srYcrNV7ttmDw7kf/97P5zauIhxcjX+xHv4M=
+      bitbucket.org ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAubiN81eDcafrgMeLzaFPsw2kNvEcqTKl/VqLat/MaB33pZy0y3rJZtnqwR2qOOvbwKZYKiEO1O6VqNEBxKvJJelCq0dTXWT5pbO2gDXC6h6QDXCaHo6pOHGPUy+YBaGQRGuSusMEASYiWunYN0vCAI8QaXnWMXNMdFP3jHAJH0eDsoiGnLPBlBp4TNm6rYI74nMzgz3B9IikW4WVK+dc8KZJZWYjAuORU3jc1c/NPskD2ASinf8v3xnfXeukU0sJ5N6m5E8VLjObPEO+mN2t/FZTMZLiFqPWc/ALSqnMnnhwrNi2rbfg/rd/IpL8Le3pSBne8+seeFVBoGqzHM9yXw==
       github.com ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBEmKSENjQEezOmxkZMy7opKgwFB9nkt5YRrYMjNuG5N87uRgg6CLrbo5wAdT/y6v0mKV0U2w0WZ2YB/++Tpockg=
       github.com ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOMqqnkVzrm0SdG6UOoqKLsabgH5C9okWi0dh2l9GKJl
       github.com ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCj7ndNxQowgcQnjshcLrqPEiiphnt+VTTvDP6mHBL9j1aNUkY4Ue1gvwnGLVlOhGeYrnZaMgRK6+PKCUXaDbC7qtbW8gIkhL7aGCsOr/C56SJMy/BCZfxd1nWzAOxSDPgVsmerOBYfNqltV9/hWCqBywINIR+5dIg6JTJ72pcEpEjcYgXkE2YEFXV1JHnsKgbLWNlhScqb2UmyRkQyytRLtL+38TGxkxCflmO+5Z8CSSNY7GidjMIZ7Q4zMjA2n1nGrlTDkzwDCsw+wqFPGQA179cnfGWOWRVruj16z6XyvxvjJwbz0wQZ75XK5tKSb7FNyeIEs4TT4jk+S4dhPeAUC5y+bDYirYgM4GC7uEnztnZyaVWQ7B381AK4Qdrwt51ZqExKbQpTUNn+EjqoTwvqNj4kqx5QUCI0ThS/YkOxJCXmPUWZbhjpCg56i+2aB6CmK2JGhn57K5mj0MNdBXA4/WnwH6XoPWJzK5Nyu2zB3nAZp+S5hpQs+p1vN1/wsjk=
@@ -410,7 +408,7 @@ configs:
   ## - https://argo-cd.readthedocs.io/en/stable/user-guide/projects/#project-scoped-repositories-and-clusters
   clusterCredentials: []
     # - name: mycluster
-    #   server: https://mycluster.example.com
+    #   server: https://mycluster.com
     #   labels: {}
     #   annotations: {}
     #   config:
@@ -419,7 +417,7 @@ configs:
     #       insecure: false
     #       caData: "<base64 encoded certificate>"
     # - name: mycluster2
-    #   server: https://mycluster2.example.com
+    #   server: https://mycluster2.com
     #   labels: {}
     #   annotations: {}
     #   namespaces: namespace1,namespace2
@@ -430,7 +428,7 @@ configs:
     #       insecure: false
     #       caData: "<base64 encoded certificate>"
     # - name: mycluster3-project-scoped
-    #   server: https://mycluster3.example.com
+    #   server: https://mycluster3.com
     #   labels: {}
     #   annotations: {}
     #   project: my-project1
@@ -545,27 +543,13 @@ configs:
   ## Ref: https://argo-cd.readthedocs.io/en/stable/operator-manual/custom-styles/
   styles: ""
   # styles: |
-  #  .sidebar {
+  #  .nav-bar {
   #    background: linear-gradient(to bottom, #999, #777, #333, #222, #111);
   #  }
 
 # -- Array of extra K8s manifests to deploy
 ## Note: Supports use of custom Helm templates
 extraObjects: 
-  - apiVersion: bitnami.com/v1alpha1
-    kind: SealedSecret
-    metadata:
-      creationTimestamp: null
-      name: argocd-notifications-secret
-      namespace: argocd
-    spec:
-      encryptedData:
-        webhook-url: AgBqG2uY+JeODbX+DoEAkd2l7TO9qVipys1LvsXqWDMHrwBnDCpXslEucmINl4zVxfRjq73gKlE9AnxwFtKJFJckr8QIFgNmsBRYUTlm5RgtjPWJSlAQ2hjb/snlY11ZCNfHf55UGZiSmZsVdr+iUPu8QjdJuNbw+3GV5YbQtSxvIo/Gv5rIoyOoi1axVEAHcXl3TURvbng0rMnyC6Q/CvDHpHqPmVuutlXR+P7l8BW3yygTZgsqSs+P0uPfqIe2K2QouOiVY8g2OiwQ3J97vJfu7wDZYcFM1UMQc4tmZRIKLRma7skCobWroRAYpE2HoOPgBAhOPhozgPKl7u1P6BNfTvBLmfUIEeImofADRnUBpGkeDKyB5hzbtRe/eAluHItvNbpIR8QL+v2A8CUZK28QEdh7PcDUQ7EuobcKtN5uccffwVzQqFZ4A9X1v9eCJOPiKAnAG1Sf36q3UVzqVitRbZsKTqvA2QwAhRUbGA+/J71onO6bQdY5xz+7TMW56jAbyLkc5bbY/tKyG0lvBPp95cKXYcCWmVs20o8uKVvfW1w3AFwsUUY3M4oQYiQVZuAz9rs1fA1oQ+IekYq0L9PPIvqh6ehMxDayWOsSeLU5t3TKpbRxbxKi5sFgHX715RGJGN6OolFTcJ8ZuZmkd6HGjlyzaG0DuT4fnrCpkNluaYO8uEf8knwQzu1U+2k2Nrw+JEWQdFc8zaJwDMBcO0yLdXeVWhb8k3udCPGYSlg3L1IowHo05/ziRStR4E+xETwidCnkUvvCjJ+n16mbpODvGVfQDimLzbK7fyEbPKh6epZRsLlMOEN4yWpDqgWL3o8ir9Ktrl8ZRw+AOXKUjnyCnzYDA3BkdRMjde/aO1cBI5XPOzd9NAV2niRebYiHSpbwFDA6EACy4g==
-      template:
-        metadata:
-          creationTimestamp: null
-          name: argocd-notifications-secret
-          namespace: argocd
   - apiVersion: argoproj.io/v1alpha1
     kind: Application
     metadata:
@@ -585,7 +569,46 @@ extraObjects:
       syncPolicy:
         syncOptions:
           - CreateNamespace=true
-
+    
+  # - apiVersion: bitnami.com/v1alpha1 
+  #   kind: SealedSecret
+  #   metadata:
+  #     creationTimestamp: null
+  #     name: argocd-notifications-secret
+  #     namespace: argocd
+  #   spec:
+  #     encryptedData:
+  #       webhook-url: AgBqG2uY+JeODbX+DoEAkd2l7TO9qVipys1LvsXqWDMHrwBnDCpXslEucmINl4zVxfRjq73gKlE9AnxwFtKJFJckr8QIFgNmsBRYUTlm5RgtjPWJSlAQ2hjb/snlY11ZCNfHf55UGZiSmZsVdr+iUPu8QjdJuNbw+3GV5YbQtSxvIo/Gv5rIoyOoi1axVEAHcXl3TURvbng0rMnyC6Q/CvDHpHqPmVuutlXR+P7l8BW3yygTZgsqSs+P0uPfqIe2K2QouOiVY8g2OiwQ3J97vJfu7wDZYcFM1UMQc4tmZRIKLRma7skCobWroRAYpE2HoOPgBAhOPhozgPKl7u1P6BNfTvBLmfUIEeImofADRnUBpGkeDKyB5hzbtRe/eAluHItvNbpIR8QL+v2A8CUZK28QEdh7PcDUQ7EuobcKtN5uccffwVzQqFZ4A9X1v9eCJOPiKAnAG1Sf36q3UVzqVitRbZsKTqvA2QwAhRUbGA+/J71onO6bQdY5xz+7TMW56jAbyLkc5bbY/tKyG0lvBPp95cKXYcCWmVs20o8uKVvfW1w3AFwsUUY3M4oQYiQVZuAz9rs1fA1oQ+IekYq0L9PPIvqh6ehMxDayWOsSeLU5t3TKpbRxbxKi5sFgHX715RGJGN6OolFTcJ8ZuZmkd6HGjlyzaG0DuT4fnrCpkNluaYO8uEf8knwQzu1U+2k2Nrw+JEWQdFc8zaJwDMBcO0yLdXeVWhb8k3udCPGYSlg3L1IowHo05/ziRStR4E+xETwidCnkUvvCjJ+n16mbpODvGVfQDimLzbK7fyEbPKh6epZRsLlMOEN4yWpDqgWL3o8ir9Ktrl8ZRw+AOXKUjnyCnzYDA3BkdRMjde/aO1cBI5XPOzd9NAV2niRebYiHSpbwFDA6EACy4g==
+  #     template:
+  #       metadata:
+  #         creationTimestamp: null
+  #         name: argocd-notifications-secret
+  #         namespace: argocd
+  # - apiVersion: secrets-store.csi.x-k8s.io/v1
+  #   kind: SecretProviderClass
+  #   metadata:
+  #     name: argocd-secrets-store
+  #   spec:
+  #     provider: aws
+  #     parameters:
+  #       objects: |
+  #         - objectName: "argocd"
+  #           objectType: "secretsmanager"
+  #           jmesPath:
+  #               - path: "client_id"
+  #                 objectAlias: "client_id"
+  #               - path: "client_secret"
+  #                 objectAlias: "client_secret"
+  #     secretObjects:
+  #     - data:
+  #       - key: client_id
+  #         objectName: client_id
+  #       - key: client_secret
+  #         objectName: client_secret
+  #       secretName: argocd-secrets-store
+  #       type: Opaque
+  #       labels:
+  #         app.kubernetes.io/part-of: argocd
 
 ## Application controller
 controller:
@@ -656,7 +679,7 @@ controller:
   # - configMapRef:
   #     name: config-map-name
   # - secretRef:
-  #     name: argocd-notifications-secret
+  #     name: secret-name
 
   # -- Additional containers to be added to the application controller pod
   ## Note: Supports use of custom Helm templates
@@ -745,9 +768,6 @@ controller:
     successThreshold: 1
     # -- Number of seconds after which the [probe] times out
     timeoutSeconds: 1
-
-  # -- terminationGracePeriodSeconds for container lifecycle hook
-  terminationGracePeriodSeconds: 30
 
   # -- Priority class for the application controller pods
   # @default -- `""` (defaults to global.priorityClassName)
@@ -1092,9 +1112,6 @@ dex:
     # -- Number of seconds after which the [probe] times out
     timeoutSeconds: 1
 
-  # -- terminationGracePeriodSeconds for container lifecycle hook
-  terminationGracePeriodSeconds: 30
-
   serviceAccount:
     # -- Create dex service account
     create: true
@@ -1183,7 +1200,7 @@ redis:
     # -- Redis repository
     repository: public.ecr.aws/docker/library/redis
     # -- Redis tag
-    tag: 7.0.13-alpine
+    tag: 7.0.11-alpine
     # -- Redis image pull policy
     # @default -- `""` (defaults to global.image.imagePullPolicy)
     imagePullPolicy: ""
@@ -1199,7 +1216,7 @@ redis:
       # -- Repository to use for the redis-exporter
       repository: public.ecr.aws/bitnami/redis-exporter
       # -- Tag to use for the redis-exporter
-      tag: 1.53.0
+      tag: 1.45.0
       # -- Image pull policy for the redis-exporter
       # @default -- `""` (defaults to global.image.imagePullPolicy)
       imagePullPolicy: ""
@@ -1300,7 +1317,6 @@ redis:
   # -- Redis container-level security context
   # @default -- See [values.yaml]
   containerSecurityContext:
-    readOnlyRootFilesystem: true
     allowPrivilegeEscalation: false
     capabilities:
       drop:
@@ -1333,9 +1349,6 @@ redis:
     # - maxSkew: 1
     #   topologyKey: topology.kubernetes.io/zone
     #   whenUnsatisfiable: DoNotSchedule
-
-  # -- terminationGracePeriodSeconds for container lifecycle hook
-  terminationGracePeriodSeconds: 30
 
   serviceAccount:
     # -- Create a service account for the redis pod
@@ -1396,17 +1409,12 @@ redis:
       # -- Prometheus ServiceMonitor annotations
       annotations: {}
 
-## Redis-HA subchart replaces custom redis deployment when `redis-ha.enabled=true`
-# Ref: https://github.com/DandyDeveloper/charts/blob/master/charts/redis-ha/values.yaml
+# This key configures Redis-HA subchart and when enabled (redis-ha.enabled=true)
+# the custom redis deployment is omitted
+# Check the redis-ha chart for more properties
 redis-ha:
   # -- Enables the Redis HA subchart and disables the custom Redis single node deployment
   enabled: false
-  ## Redis image
-  image:
-    # -- Redis repository
-    repository: redis
-    # -- Redis tag
-    tag: 7.0.13-alpine
   ## Prometheus redis-exporter sidecar
   exporter:
     # -- Enable Prometheus redis-exporter sidecar
@@ -1414,11 +1422,10 @@ redis-ha:
     # -- Repository to use for the redis-exporter
     image: public.ecr.aws/bitnami/redis-exporter
     # -- Tag to use for the redis-exporter
-    tag: 1.53.0
+    tag: 1.45.0
   persistentVolume:
     # -- Configures persistence on Redis nodes
     enabled: false
-  ## Redis specific configuration options
   redis:
     # -- Redis convention for naming the cluster group: must match `^[\\w-\\.]+$` and can be templated
     masterGroupName: argocd
@@ -1428,40 +1435,16 @@ redis-ha:
       # -- Will save the DB if both the given number of seconds and the given number of write operations against the DB occurred. `""`  is disabled
       # @default -- `'""'`
       save: '""'
-  ## Enables a HA Proxy for better LoadBalancing / Sentinel Master support. Automatically proxies to Redis master.
   haproxy:
     # -- Enabled HAProxy LoadBalancing/Proxy
     enabled: true
     metrics:
       # -- HAProxy enable prometheus metric scraping
       enabled: true
-    # -- Whether the haproxy pods should be forced to run on separate nodes.
-    hardAntiAffinity: true
-    # -- Additional affinities to add to the haproxy pods.
-    additionalAffinities: {}
-    # -- Assign custom [affinity] rules to the haproxy pods.
-    affinity: |
+  image:
+    # -- Redis tag
+    tag: 7.0.11-alpine
 
-    # -- [Tolerations] for use with node taints for haproxy pods.
-    tolerations: []
-    # -- HAProxy container-level security context
-    # @default -- See [values.yaml]
-    containerSecurityContext:
-      readOnlyRootFilesystem: true
-
-  # -- Whether the Redis server pods should be forced to run on separate nodes.
-  hardAntiAffinity: true
-
-  # -- Additional affinities to add to the Redis server pods.
-  additionalAffinities: {}
-
-  # -- Assign custom [affinity] rules to the Redis pods.
-  affinity: |
-
-  # -- [Tolerations] for use with node taints for Redis pods.
-  tolerations: []
-
-  # -- Assign custom [TopologySpreadConstraints] rules to the Redis pods.
   ## https://kubernetes.io/docs/concepts/workloads/pods/pod-topology-spread-constraints/
   topologySpreadConstraints:
     # -- Enable Redis HA topology spread constraints
@@ -1475,10 +1458,6 @@ redis-ha:
     # -- Enforcement policy, hard or soft
     # @default -- `""` (defaults to `ScheduleAnyway`)
     whenUnsatisfiable: ""
-  # -- Redis HA statefulset container-level security context
-  # @default -- See [values.yaml]
-  containerSecurityContext:
-    readOnlyRootFilesystem: true
 
 # External Redis parameters
 externalRedis:
@@ -1517,6 +1496,7 @@ server:
     # -- Average memory utilization percentage for the Argo CD server [HPA]
     targetMemoryUtilizationPercentage: 50
     # -- Configures the scaling behavior of the target in both Up and Down directions.
+    # This is only available on HPA apiVersion `autoscaling/v2beta2` and newer
     behavior: {}
       # scaleDown:
       #  stabilizationWindowSeconds: 300
@@ -1583,33 +1563,22 @@ server:
   # -- Specify postStart and preStop lifecycle hooks for your argo-cd-server container
   lifecycle: {}
 
-  ## Argo CD extensions
+  ## Argo UI extensions
   ## This function in tech preview stage, do expect instability or breaking changes in newer versions.
-  ## Ref: https://github.com/argoproj-labs/argocd-extension-installer
+  ## Ref: https://github.com/argoproj-labs/argocd-extensions
   extensions:
-    # -- Enable support for Argo CD extensions
+    # -- Enable support for Argo UI extensions
     enabled: false
 
-    ## Argo CD extension installer image
+    ## Argo UI extensions image
     image:
-      # -- Repository to use for extension installer image
-      repository: "quay.io/argoprojlabs/argocd-extension-installer"
-      # -- Tag to use for extension installer image
-      tag: "v0.0.1"
+      # -- Repository to use for extensions image
+      repository: "ghcr.io/argoproj-labs/argocd-extensions"
+      # -- Tag to use for extensions image
+      tag: "v0.2.1"
       # -- Image pull policy for extensions
       # @default -- `""` (defaults to global.image.imagePullPolicy)
       imagePullPolicy: ""
-
-    # -- Extensions for Argo CD
-    # @default -- `[]` (See [values.yaml])
-    ## Ref: https://github.com/argoproj-labs/argocd-extension-metrics#install-ui-extension
-    extensionList: []
-    #  - name: extension-metrics
-    #    env:
-    #      - name: EXTENSION_URL
-    #        value: https://github.com/argoproj-labs/argocd-extension-metrics/releases/download/v1.0.0/extension.tar.gz
-    #      - name: EXTENSION_CHECKSUM_URL
-    #        value: https://github.com/argoproj-labs/argocd-extension-metrics/releases/download/v1.0.0/extension_checksums.txt
 
     # -- Server UI extensions container-level security context
     # @default -- See [values.yaml]
@@ -1617,7 +1586,6 @@ server:
       runAsNonRoot: true
       readOnlyRootFilesystem: true
       allowPrivilegeEscalation: false
-      runAsUser: 1000
       seccompProfile:
         type: RuntimeDefault
       capabilities:
@@ -1753,9 +1721,6 @@ server:
     successThreshold: 1
     # -- Number of seconds after which the [probe] times out
     timeoutSeconds: 1
-
-  # -- terminationGracePeriodSeconds for container lifecycle hook
-  terminationGracePeriodSeconds: 30
 
   # -- Priority class for the Argo CD server pods
   # @default -- `""` (defaults to global.priorityClassName)
@@ -2101,6 +2066,7 @@ repoServer:
     # -- Average memory utilization percentage for the repo server [HPA]
     targetMemoryUtilizationPercentage: 50
     # -- Configures the scaling behavior of the target in both Up and Down directions.
+    # This is only available on HPA apiVersion `autoscaling/v2beta2` and newer
     behavior: {}
       # scaleDown:
       #  stabilizationWindowSeconds: 300
@@ -2226,9 +2192,6 @@ repoServer:
   #  - name: cmp-tmp
   #    emptyDir: {}
 
-  # -- Toggle the usage of a ephemeral Helm working directory
-  useEphemeralHelmWorkingDir: true
-
   # -- Annotations to be added to repo server Deployment
   deploymentAnnotations: {}
 
@@ -2299,9 +2262,6 @@ repoServer:
     successThreshold: 1
     # -- Number of seconds after which the [probe] times out
     timeoutSeconds: 1
-
-  # -- terminationGracePeriodSeconds for container lifecycle hook
-  terminationGracePeriodSeconds: 30
 
   # -- [Node selector]
   # @default -- `{}` (defaults to global.nodeSelector)
@@ -2504,7 +2464,7 @@ applicationSet:
     # - configMapRef:
     #     name: config-map-name
     # - secretRef:
-    #     name: webhook-url
+    #     name: secret-name
 
   # -- Additional containers to be added to the ApplicationSet controller pod
   ## Note: Supports use of custom Helm templates
@@ -2659,9 +2619,6 @@ applicationSet:
     successThreshold: 1
     # -- Minimum consecutive failures for the [probe] to be considered failed after having succeeded
     failureThreshold: 3
-
-  # -- terminationGracePeriodSeconds for container lifecycle hook
-  terminationGracePeriodSeconds: 30
 
   # -- [Node selector]
   # @default -- `{}` (defaults to global.nodeSelector)
@@ -2867,7 +2824,7 @@ notifications:
 
   secret:
     # -- Whether helm chart creates notifications controller secret
-    create: false
+    create: true
 
     # -- key:value pairs of annotations to be added to the secret
     annotations: {}
@@ -2982,9 +2939,6 @@ notifications:
       drop:
       - ALL
 
-  # -- terminationGracePeriodSeconds for container lifecycle hook
-  terminationGracePeriodSeconds: 30
-
   # -- [Node selector]
   # @default -- `{}` (defaults to global.nodeSelector)
   nodeSelector: {}
@@ -3030,12 +2984,6 @@ notifications:
     # -- Whether helm chart creates notifications controller config map
     create: true
 
-  ## Enable this and set the rules: to whatever custom rules you want for the Cluster Role resource.
-  ## Defaults to off
-  clusterRoleRules:
-    # -- List of custom rules for the notifications controller's ClusterRole resource
-    rules: []
-
   # -- Contains centrally managed global application subscriptions
   ## For more information: https://argocd-notifications.readthedocs.io/en/stable/subscriptions/
   subscriptions: []
@@ -3055,7 +3003,6 @@ notifications:
   # -- The notification template is used to generate the notification content
   ## For more information: https://argocd-notifications.readthedocs.io/en/stable/templates/
   templates: 
-
     template.sync: |
       webhook:
         gchat:
@@ -3299,7 +3246,6 @@ notifications:
   # -- The trigger defines the condition when the notification should be sent
   ## For more information: https://argocd-notifications.readthedocs.io/en/stable/triggers/
   triggers: 
-
     trigger.sync-operation-change: |
     
       - when: app.status.operationState.phase in ['Error', 'Failed']
@@ -3343,7 +3289,3 @@ notifications:
     # For more information: https://argocd-notifications.readthedocs.io/en/stable/triggers/#default-triggers
     # defaultTriggers: |
     #   - on-sync-status-unknown
-
-
-
-
