@@ -19,7 +19,7 @@
 
    #### kubectl create secret generic argocd-notifications-secret --from-literal=webhook-url="https://url.com"  --dry-run=client -o yaml |kubeseal --controller-name="controller_name" --controller-namespace="namespace of controller" --namespace="In which namespace u want to create secret" -o yaml 
 
-   If your controller name is : "sealed-secrets-controller", and your controller is in kube-system namespace
+   ## If your controller name is : "sealed-secrets-controller", and your controller is in kube-system namespace
    ### kubectl create secret generic secretname --from-literal=webhook-url="https://url"  --dry-run=client -o yaml |kubeseal --namespace=argocd -o yaml
 
 
