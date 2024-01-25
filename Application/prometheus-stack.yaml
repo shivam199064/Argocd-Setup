@@ -11,7 +11,7 @@ spec:
     path: DeploymentHelm/kube-prometheus-stack
     helm:
       version: v3
-      releaseName: kube-prometheus-stack
+      releaseName: argocd
       valueFiles:
       - values.yaml
       skipCrds: false
