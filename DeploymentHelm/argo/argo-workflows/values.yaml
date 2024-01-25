@@ -175,9 +175,9 @@ controller:
   # -- Default values that will apply to all Workflows from this controller, unless overridden on the Workflow-level.
   # Only valid for 2.7+
   ## See more: https://argoproj.github.io/argo-workflows/default-workflow-specs/
-  workflowDefaults: 
-    spec:
-      serviceAccountName: workflow
+  workflowDefaults: {}
+    # spec:
+    #   serviceAccountName: workflow
   #   spec:
   #     ttlStrategy:
   #       secondsAfterCompletion: 84600
@@ -243,7 +243,7 @@ controller:
   # workflows. This controls where the service account and RBAC resources will
   # be created. Only valid when singleNamespace is false.
   workflowNamespaces:
-    - workflows
+    - workflow
 
   instanceID:
     # -- Configures the controller to filter workflow submissions
