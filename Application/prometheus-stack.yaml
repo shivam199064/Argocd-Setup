@@ -10,8 +10,8 @@ spec:
   source:
     path: DeploymentHelm/kube-prometheus-stack
     helm:
-      version: v3
-      releaseName: argocd
+      version: 41.7.0
+      releaseName: kube-prometheus-stack
       valueFiles:
       - values.yaml
       skipCrds: false
@@ -23,3 +23,8 @@ spec:
   syncPolicy:
     syncOptions:
       - CreateNamespace=true
+  ignoreDifferences:
+  - group: monitoring.coreos.com
+    kind: ServiceMonitor
+    jqPathExpressions:
+    - .spec.endpoints[]?.relabelings[]?.action
