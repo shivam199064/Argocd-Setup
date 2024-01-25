@@ -560,31 +560,13 @@ extraObjects:
       namespace: argocd
     spec:
       encryptedData:
-        webhook-url: AgBqG2uY+JeODbX+DoEAkd2l7TO9qVipys1LvsXqWDMHrwBnDCpXslEucmINl4zVxfRjq73gKlE9AnxwFtKJFJckr8QIFgNmsBRYUTlm5RgtjPWJSlAQ2hjb/snlY11ZCNfHf55UGZiSmZsVdr+iUPu8QjdJuNbw+3GV5YbQtSxvIo/Gv5rIoyOoi1axVEAHcXl3TURvbng0rMnyC6Q/CvDHpHqPmVuutlXR+P7l8BW3yygTZgsqSs+P0uPfqIe2K2QouOiVY8g2OiwQ3J97vJfu7wDZYcFM1UMQc4tmZRIKLRma7skCobWroRAYpE2HoOPgBAhOPhozgPKl7u1P6BNfTvBLmfUIEeImofADRnUBpGkeDKyB5hzbtRe/eAluHItvNbpIR8QL+v2A8CUZK28QEdh7PcDUQ7EuobcKtN5uccffwVzQqFZ4A9X1v9eCJOPiKAnAG1Sf36q3UVzqVitRbZsKTqvA2QwAhRUbGA+/J71onO6bQdY5xz+7TMW56jAbyLkc5bbY/tKyG0lvBPp95cKXYcCWmVs20o8uKVvfW1w3AFwsUUY3M4oQYiQVZuAz9rs1fA1oQ+IekYq0L9PPIvqh6ehMxDayWOsSeLU5t3TKpbRxbxKi5sFgHX715RGJGN6OolFTcJ8ZuZmkd6HGjlyzaG0DuT4fnrCpkNluaYO8uEf8knwQzu1U+2k2Nrw+JEWQdFc8zaJwDMBcO0yLdXeVWhb8k3udCPGYSlg3L1IowHo05/ziRStR4E+xETwidCnkUvvCjJ+n16mbpODvGVfQDimLzbK7fyEbPKh6epZRsLlMOEN4yWpDqgWL3o8ir9Ktrl8ZRw+AOXKUjnyCnzYDA3BkdRMjde/aO1cBI5XPOzd9NAV2niRebYiHSpbwFDA6EACy4g==
+        webhook-url: AgAPl4zYnlUC7BNUTElHxkprb6f1BUVI2hZlIQpqYM4PVe34vg/vQPStsbuB56f//YPjFjT8vOZdNZje9uTaSqnIW4ETnPjYxWfBDIzT1p9h57sepT+Ehx1zgQtwmLlgByU41H2kgi7uf6cMXhpphCMuAH5bZFNEUjRdD9YmwltiUOf+njun7K5D4NGrx4W924mMENTFjJPKWysSUvB9TvnYr3VxA5eF2i65b4gSOIBat/5OTSSeRBdDHyVvGd+T0jjgU7wN3Hc7xVVXg3NQsxUXoIRVzIZvpQYeUCKH3hry8exrrh6jSjqaxUgZaevAuYHkKJ3YExIE/JDqqOJ3GBSmQTP3W50MA2MFRx22rghWvJgpqSXwpbjbg11aeXBiNOgYY/0NgjK73D47SSLdOBEdjMSEvb6l1AK9tkrtw379RpyI0MTN/toGuq9bdyR+4t6tna4hycCSgHH7hou0HTUxU6mJ+oIvAfuqJ35PCv+BuPsxnOpXyynZVf5ucb4wGt4JhBUFo3m+LjVHzVpf6n+WbHYJL9sxU4Dr+lZKewEJ1Oh4/A2HkEF3NaD9DC6axXroVhTgukfAJD/61On/pYsK2azfHh7oiepatPYHjCaf/8BEvdXfaFsNBCS9qbBRUhfOSekHFlhGPatMAQI/tnjw+zypcKCfpgXe6bIaDfOSq4CoTnxN7wX0b8Tyt5IzD/QJkEfbKzi1l4b/qNU5R3wLMu5geqAfBkQt3x4B3ou+rLUw/xTpzEF87HrgSGRCq3KOQwXb9SvdeGWY+DVx/3iSyBq59Rsu4BjZSEJjADTZIBXG+8c9uijJCLMcuYz2oNB04IjkCke04JfISXSgmNlJQfI9yf0evLvR91PwgDAhMb3euXysYSBfn1bCe9/zBanrYMSNS0H6iw==
       template:
         metadata:
           creationTimestamp: null
           name: argocd-notifications-secret
           namespace: argocd
-  - apiVersion: argoproj.io/v1alpha1
-    kind: Application
-    metadata:
-      name: main
-      namespace: argocd
-      annotations:
-        notifications.argoproj.io/subscribe.sync-operation-change.gchat: spaceName
-    spec:
-      destination:
-        server: https://kubernetes.default.svc
-        namespace: argocd
-      project: default
-      source:
-        path: Application
-        repoURL: https://github.com/shivam199064/Argocd-Setup.git
-        targetRevision: HEAD
-      syncPolicy:
-        syncOptions:
-          - CreateNamespace=true
+  
 
 
 ## Application controller
