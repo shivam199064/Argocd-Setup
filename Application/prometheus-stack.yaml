@@ -23,8 +23,8 @@ spec:
   syncPolicy:
     syncOptions:
       - CreateNamespace=true
-  ignoreDifferences:
-  - group: monitoring.coreos.com
-    kind: ServiceMonitor
-    jqPathExpressions:
-    - .spec.endpoints[]?.relabelings[]?.action
+  # ignoreDifferences:
+  # - group: monitoring.coreos.com
+  #   kind: ServiceMonitor
+  #   jqPathExpressions:
+  #   - .spec.endpoints[]?.relabelings[]?.action
