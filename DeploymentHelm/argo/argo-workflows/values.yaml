@@ -175,7 +175,9 @@ controller:
   # -- Default values that will apply to all Workflows from this controller, unless overridden on the Workflow-level.
   # Only valid for 2.7+
   ## See more: https://argoproj.github.io/argo-workflows/default-workflow-specs/
-  workflowDefaults: {}
+  workflowDefaults: 
+    spec:
+      serviceAccountName: workflow
   #   spec:
   #     ttlStrategy:
   #       secondsAfterCompletion: 84600
