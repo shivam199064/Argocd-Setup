@@ -21,25 +21,7 @@
 
    If your controller name is : "sealed-secrets-controller", and your controller is in kube-system namespace
    ### kubectl create secret generic secretname --from-literal=webhook-url="https://url"  --dry-run=client -o yaml |kubeseal --namespace=argocd -o yaml
-Like that:
-extraObjects: 
-    
-  - apiVersion: bitnami.com/v1alpha1
-    kind: SealedSecret
-    metadata:
-      creationTimestamp: null
-      name: argocd-notifications-secret
-      namespace: argocd
-    spec:
-      encryptedData:
-        webhook-url: AgBRBJBH5SKnbqwsz4N+V+FORmij7YjHZbdcAAEZ+OtNkhXosgDwDq7vhc/xDLK02EtGxg3rj2zCxcc+xh96aMlITy+bJrX7qILuXRl8nUsLewTAAZo5rnuSt24Y3tDuEvETw+FXaRXlfbcU749fNGii8lDQxZUBdZEILJKiM9VYB3osGlbP53vdua9yVbBXr0C9ASf1FPCtkYcMzbx6c/kWLAcNN8Mr9h9biafULadeon7y9qIz5Lfzda8KTTQjesxoWvKdmB0ojBP0/F5wzrwjt8fsjvdhaF7ea9wceNutS96Kwu+LuSQx1zzrwOP7ZC5L2/eaT9q3kHZYjWTNuTWi9lUzsw2tncTFm4cNiLsr1wh1mYmed4QrjJPOeHMJpeJZ6TL/mRawQsuJbKJexNBPXbUj9+FOg6voC0mD+tZRiT/SxN4Gj7PYAn8zmgvPqqB4fhaHA0VB62ASLaqREcoTumkBHAEAsPG6ampl2Ho81w0uvUiXTRRO8+Zi6nivgzd1u10iqQu+nHfC1h+pTYNHr5OdS+DKwhEJvE8hfOWfMOTIjN2eGpwH1PUOGIjBffYAtJiRQfuBqRPkE1pCX3OsW2J90uS3AgHchJ0bCFGKRLYImTZmkIVaxSgHYY8OU6UWZumU6otrW7xdcilP1tGMBl4oCFIeR7FtJVDtJIMHkz+dDyDNaUvlrO9coFSGXMIU8fjlAzStWqdZJh4YLDxK7krH93KA3gR1qmH5+KJlBYkk3g0Yd8xlAAnhlT+xXw74AtaASkcSGTtUMbdl4TIrzB+PlJSmFWK6dEdE/Q4CSdo4kNthUo44XtVLlP0NfpLkj8M9Hj0MY0HtqSnWM4GJeoYTX0SlFTmrPENB9mac8+K9IYMWOe08+h2orYzmhhQKXBD3FXpxVw==
-      template:
-        metadata:
-          creationTimestamp: null
-          name: argocd-notifications-secret
-          namespace: argocd
 
-          
 
 # Installation of argoworkflow with helm
 
