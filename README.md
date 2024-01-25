@@ -1,6 +1,9 @@
 # Installation of argocd with helm
    #### helm install --dependency-update --namespace argocd  argocd argo-cd
 
+   ## Then create main Application
+   ####  kubectl apply -f Application/main.yaml 
+
 ## Port forward of argocd
    #### kubectl port-forward svc/argocd-server  8080:443 -n argocd >/dev/null &
 
