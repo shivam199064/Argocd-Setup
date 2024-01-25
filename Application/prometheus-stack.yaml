@@ -10,7 +10,7 @@ spec:
   source:
     path: DeploymentHelm/kube-prometheus-stack
     helm:
-      version: 41.7.0
+      version: v3
       releaseName: kube-prometheus-stack
       valueFiles:
       - values.yaml
