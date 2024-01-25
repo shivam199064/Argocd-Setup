@@ -1,25 +1,25 @@
-apiVersion: argoproj.io/v1alpha1
-kind: Application
-metadata:
-  name: argo-workflow
-  namespace: argocd
-  annotations:
-    notifications.argoproj.io/subscribe.sync-operation-change.gchat: spaceName
-spec:
-  project: default
-  source:
-    path: DeploymentHelm/argo/argo-workflows
-    helm:
-      version: v3
-      releaseName: argocd
-      valueFiles:
-      - values.yaml
-      skipCrds: true
-    repoURL: https://github.com/shivam199064/Argocd-Setup.git
-    targetRevision: HEAD
-  destination:
-    namespace: argo
-    server: 'https://kubernetes.default.svc'
-  syncPolicy:
-    syncOptions:
-      - CreateNamespace=true
+# apiVersion: argoproj.io/v1alpha1
+# kind: Application
+# metadata:
+#   name: argo-workflow
+#   namespace: argocd
+#   annotations:
+#     notifications.argoproj.io/subscribe.sync-operation-change.gchat: spaceName
+# spec:
+#   project: default
+#   source:
+#     path: DeploymentHelm/argo/argo-workflows
+#     helm:
+#       version: v3
+#       releaseName: argocd
+#       valueFiles:
+#       - values.yaml
+#       skipCrds: true
+#     repoURL: https://github.com/shivam199064/Argocd-Setup.git
+#     targetRevision: HEAD
+#   destination:
+#     namespace: argo
+#     server: 'https://kubernetes.default.svc'
+#   syncPolicy:
+#     syncOptions:
+#       - CreateNamespace=true

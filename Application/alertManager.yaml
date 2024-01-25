@@ -1,25 +1,25 @@
-apiVersion: argoproj.io/v1alpha1
-kind: Application
-metadata:
-  name: alert-manager
-  namespace: argocd
-  annotations:
-    notifications.argoproj.io/subscribe.sync-operation-change.gchat: spaceName
-spec:
-  destination:
-    server: https://kubernetes.default.svc
-    namespace: monitoring
-  project: default
-  source:
-    path: Deployment/alert-manager/
-    repoURL: https://github.com/shivam199064/Argocd-Setup.git
-    targetRevision: HEAD
-  syncPolicy:
-    syncOptions:
-      - CreateNamespace=true
-  # syncPolicy:
-  #   automated:
-  #     prune: true
-  #     selfHeal: true
+# apiVersion: argoproj.io/v1alpha1
+# kind: Application
+# metadata:
+#   name: alert-manager
+#   namespace: argocd
+#   annotations:
+#     notifications.argoproj.io/subscribe.sync-operation-change.gchat: spaceName
+# spec:
+#   destination:
+#     server: https://kubernetes.default.svc
+#     namespace: monitoring
+#   project: default
+#   source:
+#     path: Deployment/alert-manager/
+#     repoURL: https://github.com/shivam199064/Argocd-Setup.git
+#     targetRevision: HEAD
+#   syncPolicy:
+#     syncOptions:
+#       - CreateNamespace=true
+#   # syncPolicy:
+#   #   automated:
+#   #     prune: true
+#   #     selfHeal: true
     
 
