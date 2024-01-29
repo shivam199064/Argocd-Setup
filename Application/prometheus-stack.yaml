@@ -13,7 +13,7 @@ spec:
       version: v3
       releaseName: argocd
       valueFiles:
-      - values.yaml
+      - values-beta.yaml
       skipCrds: false
     repoURL: https://github.com/shivam199064/Argocd-Setup.git
     targetRevision: HEAD

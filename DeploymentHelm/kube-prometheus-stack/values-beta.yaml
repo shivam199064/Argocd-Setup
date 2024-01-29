@@ -1,0 +1,473 @@
+defaultRules:
+  create: true
+  rules:
+    etcd: false
+    kubeScheduler: false
+    kubeControllerManager: false
+
+# 
+alertmanager:
+  enabled: true
+  serviceMonitor:
+    selfMonitor: true
+  alertmanagerSpec:
+    logLevel: debug
+    # nodeSelector:
+    #   role: infra
+    # tolerations:
+    #   - key: "role"
+    #     operator: "Equal"
+    #     value: "infra"
+    #     effect: "NoSchedule"
+    resources:
+      limits:
+        cpu: 200m
+        memory: 200Mi
+      requests:
+        cpu: 10m
+        memory: 60Mi
+  config:
+    global:
+      resolve_timeout: 24h
+    inhibit_rules:
+    - source_matchers:
+      - 'severity = critical'
+      target_matchers:
+      - 'severity =~ warning|info'
+      equal:
+      - 'namespace'
+      - 'alertname'
+    - source_matchers:
+      - 'severity = warning'
+      target_matchers:
+      - 'severity = info'
+      equal:
+      - 'namespace'
+      - 'alertname'
+    - source_matchers:
+      - 'alertname = InfoInhibitor'
+      target_matchers:
+      - 'severity = info'
+      equal:
+      - 'namespace'
+    route:
+      group_by: ['namespace', 'job', 'alertname', 'team']
+      group_wait: 30s
+      group_interval: 5m
+      repeat_interval: 30m
+      receiver: 'infra-team-mm-receiver'
+      routes:
+      - receiver: 'infra-team-mm-receiver'
+        matchers:
+          - alertname =~ "InfoInhibitor|Watchdog"
+      - receiver: 'dispatch-receiver'
+        group_interval: 5m
+        repeat_interval: 15m
+        matchers:
+          - severity =~ "error|critical"
+      # - receiver: 'application-team-mm-receiver'
+      #   group_interval: 1m
+      #   repeat_interval: 1m
+      #   continue: true
+      #   matchers:
+      #     - type = logging
+
+    receivers:
+    - name: dispatch-receiver
+      webhook_configs:
+      - url: 'https://dispatch-webhook.shivam.com/webhook'
+    templates:
+    - '/etc/alertmanager/config/*.tmpl'
+  templateFiles:
+    infra.tmpl: |-
+      {{ define "cluster" }}{{ .ExternalURL | reReplaceAll ".*alertmanager\\.(.*)" "$1" }}{{ end }}
+      {{ define "infra.k8s.text" }}
+      {{- $root := . -}}
+      {{ range .Alerts }}
+        *Alert:* {{ .Annotations.summary }} - `{{ .Labels.severity }}`
+        *Cluster:*  {{ template "cluster" $root }}
+        *Description:* {{ .Annotations.description }}
+        *Graph:* <{{ .GeneratorURL }}|:chart_with_upwards_trend:>
+        *Runbook:* <{{ .Annotations.runbook }}|:spiral_note_pad:>
+        *Details:*
+          {{ range .Labels.SortedPairs }} • *{{ .Name }}:* `{{ .Value }}`
+          {{ end }}
+      {{ end }}
+      {{ end }}
+    application.tmpl: |-
+      {{ define "application.k8s.text" }}
+      {{- $root := . -}}
+      {{ range .Alerts }}
+        *Alert:* {{ .Annotations.description }} - `{{ .Annotations.severity }}`
+        *Link:* <https://grafana.beta.shivam.com/d/loki-apps-dashboard/logs-app?orgId=1&var-namespace={{ .Annotations.namespace }}&var-app={{ .Annotations.namespace }}%2F{{ .Annotations.application }}&var-search=%22level%22:50&from=now-24h&to=now|grafana>
+      {{ end }}
+      {{ end }}
+
+  # 
+
+grafana:
+  enabled: true
+  resources:
+    limits:
+      cpu: 100m
+      memory: 1000Mi
+    requests:
+      cpu: 20m
+      memory: 250Mi
+  # nodeSelector:
+  #   role: infra
+  # tolerations:
+  #   - key: "role"
+  #     operator: "Equal"
+  #     value: "infra"
+  #     effect: "NoSchedule"
+  namespaceOverride: ""
+  image:
+    repository: grafana/grafana
+    tag: 9.1.6
+  ## ForceDeployDatasources Create datasource configmap even if grafana deployment has been disabled
+  ##
+  forceDeployDatasources: false
+
+  ## ForceDeployDashboard Create dashboard configmap even if grafana deployment has been disabled
+  ##
+  forceDeployDashboards: false
+
+  ## Deploy default dashboards
+  ##
+  defaultDashboardsEnabled: true
+  defaultDashboardsTimezone: utc
+  #
+  sidecar:
+    dashboards:
+      enabled: true
+      label: grafana_dashboard
+      annotations: {}
+      multicluster:
+        global:
+          enabled: true
+        etcd:
+          enabled: false
+      provider:
+        allowUiUpdates: false
+    datasources:
+      enabled: true
+      defaultDatasourceEnabled: true
+      annotations: {}
+      createPrometheusReplicasDatasources: true
+      isDefaultDatasource: false
+      label: grafana_datasource
+  dashboardProviders:
+    dashboardproviders.yaml:
+      apiVersion: 1
+      providers:
+      - name: 'logs-app'
+        orgId: 1
+        folder: 'Logs'
+        type: file
+        disableDeletion: false
+        editable: true
+        options:
+          path: /var/lib/grafana/dashboards/logs-app
+      - name: 'k8s-logs'
+        orgId: 1
+        folder: 'Logs'
+        type: file
+        disableDeletion: false
+        editable: true
+        options:
+          path: /var/lib/grafana/dashboards/k8s-logs
+      - name: 'blackbox'
+        orgId: 1
+        folder: 'Uptime'
+        type: file
+        disableDeletion: false
+        editable: true
+        options:
+          path: /var/lib/grafana/dashboards/blackbox
+      - name: 'blackbox-exporter'
+        orgId: 1
+        folder: 'Uptime'
+        type: file
+        disableDeletion: false
+        editable: true
+        options:
+          path: /var/lib/grafana/dashboards/blackbox-exporter
+      - name: 'uptime-kuma'
+        orgId: 1
+        folder: 'Uptime'
+        type: file
+        disableDeletion: false
+        editable: true
+        options:
+          path: /var/lib/grafana/dashboards/uptime-kuma
+      - name: 'argocd'
+        orgId: 1
+        folder: 'Infra'
+        type: file
+        disableDeletion: false
+        editable: true
+        options:
+          path: /var/lib/grafana/dashboards/argocd
+      - name: 'external-dns'
+        orgId: 1
+        folder: 'Infra'
+        type: file
+        disableDeletion: false
+        editable: true
+        options:
+          path: /var/lib/grafana/dashboards/external-dns
+      - name: 'health-check'
+        orgId: 1
+        folder: 'Uptime'
+        type: file
+        disableDeletion: false
+        editable: true
+        options:
+          path: /var/lib/grafana/dashboards/health-check
+      - name: 'karpenter-cluster'
+        orgId: 1
+        folder: 'Infra'
+        type: file
+        disableDeletion: false
+        editable: true
+        options:
+          path: /var/lib/grafana/dashboards/karpenter-cluster
+      - name: 'karpenter-dashboard'
+        orgId: 1
+        folder: 'Infra'
+        type: file
+        disableDeletion: false
+        editable: true
+        options:
+          path: /var/lib/grafana/dashboards/karpenter-dashboard
+      - name: 'karpenter-official-dashboard'
+        orgId: 1
+        folder: 'Infra'
+        type: file
+        disableDeletion: false
+        editable: true
+        options:
+          path: /var/lib/grafana/dashboards/karpenter-official-dashboard
+      - name: 'karpenter-pod-stats'
+        orgId: 1
+        folder: 'Infra'
+        type: file
+        disableDeletion: false
+        editable: true
+        options:
+          path: /var/lib/grafana/dashboards/karpenter-pod-stats
+      - name: 'kong'
+        orgId: 1
+        folder: 'Kong'
+        type: file
+        disableDeletion: false
+        editable: true
+        options:
+          path: /var/lib/grafana/dashboards/kong
+      - name: 'kong-ingress'
+        orgId: 1
+        folder: 'Kong'
+        type: file
+        disableDeletion: false
+        editable: true
+        options:
+          path: /var/lib/grafana/dashboards/kong-ingress
+      - name: 'redis'
+        orgId: 1
+        folder: 'Infra'
+        type: file
+        disableDeletion: false
+        editable: true
+        options:
+          path: /var/lib/grafana/dashboards/redis
+  dashboards:
+    logs-app:
+      custom-dashboard:
+        # This is a path to a file inside the dashboards directory inside the chart directory
+        file: dashboards/loki-dashboard.json
+    k8s-logs:
+      custom-dashboard:
+        file: dashboards/k8s-logs-dashboard.json
+    blackbox:
+      custom-dashboard:
+        file: dashboards/blackbox-exporter-dashboard.json
+    uptime-kuma:
+      custom-dashboard:
+        file: dashboards/uptime-kuma.json
+    blackbox-exporter:
+      custom-dashboard:
+        file: dashboards/blackbox-exporter.json
+    argocd:
+      custom-dashboard:
+        file: dashboards/argoCD-dashboard.json
+    external-dns:
+      custom-dashboard:
+        file: dashboards/external-dns.json
+    health-check:
+      custom-dashboard:
+        file: dashboards/health-check-status.json
+    karpenter-cluster:
+      custom-dashboard:
+        file: dashboards/karpenter-cluster-capacity.json
+    karpenter-dashboard:
+      custom-dashboard:
+        file: dashboards/karpenter-dashboard.json
+    karpenter-official-dashboard:
+      custom-dashboard:
+        file: dashboards/karpenter-official-dashboard.json
+    karpenter-pod-stats:
+      custom-dashboard:
+        file: dashboards/karpenter-pod-statistics.json
+    kong:
+      custom-dashboard:
+        file: dashboards/kong-official-dashboard.json
+    kong-ingress:
+      custom-dashboard:
+        file: dashboards/kong-ingress-controller.json
+    redis:
+      custom-dashboard:
+        file: dashboards/redis-dashboard.json
+  plugins: []
+  extraConfigmapMounts: []
+  persistence:
+    enabled: true
+    storageClassName: gp3
+
+
+kubeApiServer:
+  enabled: true
+kubelet:
+  enabled: true
+  serviceMonitor:
+    cAdvisorRelabelings:
+    - sourceLabels: [__metrics_path__]
+      targetLabel: metrics_path
+    - sourceLabels: [__meta_kubernetes_pod_node_name]
+      separator: ;
+      regex: ^(.*)$
+      targetLabel: nodename
+      replacement: $1
+      action: replace
+    - sourceLabels: [team]
+      separator: ;
+      regex: ^$
+      targetLabel: team
+      replacement: infra
+      action: replace
+    probesRelabelings:
+    - sourceLabels: [__metrics_path__]
+      targetLabel: metrics_path
+    - sourceLabels: [__meta_kubernetes_pod_node_name]
+      separator: ;
+      regex: ^(.*)$
+      targetLabel: nodename
+      replacement: $1
+      action: replace
+    - sourceLabels: [team]
+      separator: ;
+      regex: ^$
+      targetLabel: team
+      replacement: infra
+      action: replace
+    relabelings:
+    - sourceLabels: [__metrics_path__]
+      targetLabel: metrics_path
+    - sourceLabels: [__meta_kubernetes_pod_node_name]
+      separator: ;
+      regex: ^(.*)$
+      targetLabel: nodename
+      replacement: $1
+      action: replace
+    - sourceLabels: [team]
+      separator: ;
+      regex: ^$
+      targetLabel: team
+      replacement: infra
+      action: replace
+
+kubeControllerManager:
+  enabled: false
+kubeEtcd:
+  enabled: false
+kubeScheduler:
+  enabled: false
+kubeProxy:
+  enabled: false
+
+kube-state-metrics:
+  namespaceOverride: ""
+  rbac:
+    create: true
+  podSecurityPolicy:
+    enabled: false
+  metricLabelsAllowlist:
+  - pods=[*]
+  - nodes=[*]
+  # nodeSelector:
+  #   role: infra
+  # tolerations:
+  #   - key: "role"
+  #     operator: "Equal"
+  #     value: "infra"
+  #     effect: "NoSchedule"
+  resources:
+    limits:
+      cpu: 50m
+      memory: 400Mi
+    requests:
+      cpu: 10m
+      memory: 80Mi
+
+nodeExporter:
+  enabled: true
+prometheus-node-exporter:
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+        - matchExpressions:
+          - key: eks.amazonaws.com/compute-type
+            operator: NotIn
+            values:
+            - fargate
+  prometheus:
+    monitor:
+      enabled: false
+prometheusOperator:
+  enabled: true
+  admissionWebhooks:
+    failurePolicy: Ignore
+    enabled: true
+    patch:
+      enabled: true
+    #   nodeSelector:
+    #     role: infra
+    #   affinity: {}
+    #   tolerations:
+    #     - key: "role"
+    #       operator: "Equal"
+    #       value: "infra"
+    #       effect: "NoSchedule"
+  kubeletService:
+    enabled: true
+  # nodeSelector:
+  #   role: infra
+  # tolerations:
+  #   - key: "role"
+  #     operator: "Equal"
+  #     value: "infra"
+  #     effect: "NoSchedule"
+prometheus:
+  enabled: true
+  annotations: {}
+  serviceAccount:
+    create: false
+    name: "prometheus-operator-kube-prometheus"
+  # thanosService:
+  #   enabled: true
+  # thanosServiceMonitor:
+  #   enabled: true
+  servicePerReplica:
+    enabled: false
+  
