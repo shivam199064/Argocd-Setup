@@ -31,7 +31,7 @@ spec:
   rules:
   {{- if .Values.alertmanager.ingress.hosts }}
   {{- range $host := .Values.alertmanager.ingress.hosts }}
-    - host: {{ tpl $host $ | quote }}
+    - host: {{ tpl $host $ }}
       http:
         paths:
   {{- range $p := $paths }}

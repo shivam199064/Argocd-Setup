@@ -5,9 +5,10 @@ metadata:
   name: {{ template "kube-prometheus-stack.fullname" . }}-operator
   namespace: {{ template "kube-prometheus-stack.namespace" . }}
   labels:
-    {{- include "kube-prometheus-stack.prometheus-operator.labels" . | nindent 4 }}
+    app: {{ template "kube-prometheus-stack.name" . }}-operator
+    {{- include "kube-prometheus-stack.labels" . | nindent 4 }}
 spec:
-  egress:
+  egress: 
     - {}
   ingress:
     - ports:

@@ -4,11 +4,11 @@ kind: ClusterRoleBinding
 metadata:
   name:  {{ template "kube-prometheus-stack.fullname" . }}-admission
   annotations:
-    "helm.sh/hook": pre-install,pre-upgrade,post-install,post-upgrade
+    "helm.sh/hook": pre-install
     "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded
   labels:
     app: {{ template "kube-prometheus-stack.name" $ }}-admission
-    {{- include "kube-prometheus-stack.prometheus-operator-webhook.labels" $ | nindent 4 }}
+{{- include "kube-prometheus-stack.labels" $ | indent 4 }}
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole

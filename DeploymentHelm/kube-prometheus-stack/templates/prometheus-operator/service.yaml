@@ -5,7 +5,8 @@ metadata:
   name: {{ template "kube-prometheus-stack.fullname" . }}-operator
   namespace: {{ template "kube-prometheus-stack.namespace" . }}
   labels:
-    {{- include "kube-prometheus-stack.prometheus-operator.labels" . | nindent 4 }}
+    app: {{ template "kube-prometheus-stack.name" . }}-operator
+{{ include "kube-prometheus-stack.labels" . | indent 4 }}
 {{- if .Values.prometheusOperator.service.labels }}
 {{ toYaml .Values.prometheusOperator.service.labels | indent 4 }}
 {{- end }}

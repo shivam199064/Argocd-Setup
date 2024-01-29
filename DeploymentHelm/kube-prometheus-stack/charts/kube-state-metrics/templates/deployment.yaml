@@ -18,10 +18,6 @@ spec:
     matchLabels:
       {{- include "kube-state-metrics.selectorLabels" . | indent 6 }}
   replicas: {{ .Values.replicas }}
-  {{- if not .Values.autosharding.enabled }}
-  strategy:
-    type: {{ .Values.updateStrategy | default "RollingUpdate" }}
-  {{- end }}
   revisionHistoryLimit: {{ .Values.revisionHistoryLimit }}
   {{- if .Values.autosharding.enabled }}
   serviceName: {{ template "kube-state-metrics.fullname" . }}
@@ -44,15 +40,11 @@ spec:
     {{- if .Values.priorityClassName }}
       priorityClassName: {{ .Values.priorityClassName }}
     {{- end }}
-      {{- with .Values.initContainers }}
-      initContainers:
-      {{- toYaml . | nindent 6 }}
-      {{- end }}
       containers:
-      {{- $servicePort := ternary 9090 (.Values.service.port | default 8080) .Values.kubeRBACProxy.enabled}}
+      {{- $httpPort := ternary 9090 (.Values.service.port | default 8080) .Values.kubeRBACProxy.enabled}}
       {{- $telemetryPort := ternary 9091 (.Values.selfMonitor.telemetryPort | default 8081) .Values.kubeRBACProxy.enabled}}
       - name: {{ template "kube-state-metrics.name" . }}
-        {{- if  .Values.autosharding.enabled }}
+        {{- if .Values.autosharding.enabled }}
         env:
         - name: POD_NAME
           valueFrom:
@@ -67,7 +59,7 @@ spec:
         {{-  if .Values.extraArgs  }}
         {{- .Values.extraArgs | toYaml | nindent 8 }}
         {{-  end  }}
-        - --port={{ $servicePort }}
+        - --port={{ $httpPort }}
         {{-  if .Values.collectors  }}
         - --resources={{ .Values.collectors | join "," }}
         {{-  end  }}
@@ -147,41 +139,17 @@ spec:
         {{- end }}
         {{- end }}
         livenessProbe:
-          failureThreshold: {{ .Values.livenessProbe.failureThreshold }}
           httpGet:
-            {{- if .Values.kubeRBACProxy.enabled }}
-            host: 127.0.0.1
-            {{- end }}
-            httpHeaders:
-            {{- range $_, $header := .Values.livenessProbe.httpGet.httpHeaders }}
-            - name: {{ $header.name }}
-              value: {{ $header.value }}
-            {{- end }}
             path: /healthz
-            port: {{ $servicePort }}
-            scheme: {{ upper .Values.livenessProbe.httpGet.scheme }}
-          initialDelaySeconds: {{ .Values.livenessProbe.initialDelaySeconds }}
-          periodSeconds: {{ .Values.livenessProbe.periodSeconds }}
-          successThreshold: {{ .Values.livenessProbe.successThreshold }}
-          timeoutSeconds: {{ .Values.livenessProbe.timeoutSeconds }}
+            port: {{ $httpPort }}
+          initialDelaySeconds: 5
+          timeoutSeconds: 5
         readinessProbe:
-          failureThreshold: {{ .Values.readinessProbe.failureThreshold }}
           httpGet:
-            {{- if .Values.kubeRBACProxy.enabled }}
-            host: 127.0.0.1
-            {{- end }}
-            httpHeaders:
-            {{- range $_, $header := .Values.readinessProbe.httpGet.httpHeaders }}
-            - name: {{ $header.name }}
-              value: {{ $header.value }}
-            {{- end }}
             path: /
-            port: {{ $servicePort }}
-            scheme: {{ upper .Values.readinessProbe.httpGet.scheme }}
-          initialDelaySeconds: {{ .Values.readinessProbe.initialDelaySeconds }}
-          periodSeconds: {{ .Values.readinessProbe.periodSeconds }}
-          successThreshold: {{ .Values.readinessProbe.successThreshold }}
-          timeoutSeconds: {{ .Values.readinessProbe.timeoutSeconds }}
+            port: {{ $httpPort }}
+          initialDelaySeconds: 5
+          timeoutSeconds: 5
         {{- if .Values.resources }}
         resources:
 {{ toYaml .Values.resources | indent 10 }}
@@ -197,7 +165,7 @@ spec:
         {{- .Values.kubeRBACProxy.extraArgs | toYaml | nindent 8 }}
         {{-  end  }}
         - --secure-listen-address=:{{ .Values.service.port | default 8080}}
-        - --upstream=http://127.0.0.1:{{ $servicePort }}/
+        - --upstream=http://127.0.0.1:{{ $httpPort }}/
         - --proxy-endpoints-port=8888
         - --config-file=/etc/kube-rbac-proxy-config/config-file.yaml
         volumeMounts:
@@ -267,9 +235,6 @@ spec:
 {{ toYaml .Values.kubeRBACProxy.containerSecurityContext | indent 10 }}
 {{- end }}
       {{- end }}
-      {{- end }}
-      {{- with .Values.containers }}
-      {{- toYaml . | nindent 6 }}
       {{- end }}
 {{- if or .Values.imagePullSecrets .Values.global.imagePullSecrets }}
       imagePullSecrets:

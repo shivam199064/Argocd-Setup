@@ -6,6 +6,7 @@ defaultRules:
     kubeControllerManager: false
 
 # 
+
 alertmanager:
   enabled: true
   serviceMonitor:
@@ -75,7 +76,7 @@ alertmanager:
     receivers:
     - name: dispatch-receiver
       webhook_configs:
-      - url: 'https://dispatch-webhook.shivam.com/webhook'
+      - url: 'https://dispatch-webhook.beta.shivam.com/webhook'
     templates:
     - '/etc/alertmanager/config/*.tmpl'
   templateFiles:
@@ -333,6 +334,7 @@ grafana:
   persistence:
     enabled: true
     storageClassName: gp3
+  # 
 
 
 kubeApiServer:
@@ -422,15 +424,15 @@ kube-state-metrics:
 nodeExporter:
   enabled: true
 prometheus-node-exporter:
-  affinity:
-    nodeAffinity:
-      requiredDuringSchedulingIgnoredDuringExecution:
-        nodeSelectorTerms:
-        - matchExpressions:
-          - key: eks.amazonaws.com/compute-type
-            operator: NotIn
-            values:
-            - fargate
+  # affinity:
+    # nodeAffinity:
+    #   requiredDuringSchedulingIgnoredDuringExecution:
+    #     nodeSelectorTerms:
+    #     - matchExpressions:
+    #       - key: eks.amazonaws.com/compute-type
+    #         operator: NotIn
+    #         values:
+    #         - fargate
   prometheus:
     monitor:
       enabled: false
@@ -462,7 +464,7 @@ prometheus:
   enabled: true
   annotations: {}
   serviceAccount:
-    create: false
+    create: true
     name: "prometheus-operator-kube-prometheus"
   # thanosService:
   #   enabled: true
