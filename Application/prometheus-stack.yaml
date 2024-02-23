@@ -1,37 +1,37 @@
-apiVersion: argoproj.io/v1alpha1
-kind: Application
-metadata:
-  name: kube-prometheus-stack
-  namespace: argocd
-  annotations:
-    notifications.argoproj.io/subscribe.sync-operation-change.gchat: spaceName
-spec:
-  project: default
-  source:
-    path: DeploymentHelm/kube-prometheus-stack
-    helm:
-      version: v3
-      releaseName: argocd
-      valueFiles:
-      - values-beta.yaml
-      skipCrds: false
-    repoURL: https://github.com/shivam199064/Argocd-Setup.git
-    targetRevision: HEAD
-  destination:
-    namespace: monitoring
-    server: 'https://kubernetes.default.svc'
-  syncPolicy:
-    automated:
-      prune: false
-      selfHeal: false
-    retry:
-      backoff:
-        duration: 5s
-        factor: 2
-        maxDuration: 3m
-      limit: 10
-    syncOptions:
-      - ServerSideApply=true
-      - PrunePropagationPolicy=foreground
-      - CreateNamespace=true
-      - PruneLast=true
+# apiVersion: argoproj.io/v1alpha1
+# kind: Application
+# metadata:
+#   name: kube-prometheus-stack
+#   namespace: argocd
+#   annotations:
+#     notifications.argoproj.io/subscribe.sync-operation-change.gchat: spaceName
+# spec:
+#   project: default
+#   source:
+#     path: DeploymentHelm/kube-prometheus-stack
+#     helm:
+#       version: v3
+#       releaseName: kube-prometheus-stack
+#       valueFiles:
+#       - values-beta.yaml
+#       skipCrds: false
+#     repoURL: https://github.com/shivam199064/Argocd-Setup.git
+#     targetRevision: HEAD
+#   destination:
+#     namespace: monitoring
+#     server: 'https://kubernetes.default.svc'
+#   syncPolicy:
+#     automated:
+#       prune: false
+#       selfHeal: false
+#     retry:
+#       backoff:
+#         duration: 5s
+#         factor: 2
+#         maxDuration: 3m
+#       limit: 10
+#     syncOptions:
+#       - ServerSideApply=true
+#       - PrunePropagationPolicy=foreground
+#       - CreateNamespace=true
+#       - PruneLast=true
