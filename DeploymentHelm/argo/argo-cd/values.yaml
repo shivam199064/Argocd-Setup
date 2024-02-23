@@ -552,20 +552,20 @@ configs:
 # -- Array of extra K8s manifests to deploy
 ## Note: Supports use of custom Helm templates
 extraObjects: 
-  - apiVersion: bitnami.com/v1alpha1
-    kind: SealedSecret
-    metadata:
-      creationTimestamp: null
-      name: argocd-notifications-secret
-      namespace: argocd
-    spec:
-      encryptedData:
-        webhook-url: AgAPl4zYnlUC7BNUTElHxkprb6f1BUVI2hZlIQpqYM4PVe34vg/vQPStsbuB56f//YPjFjT8vOZdNZje9uTaSqnIW4ETnPjYxWfBDIzT1p9h57sepT+Ehx1zgQtwmLlgByU41H2kgi7uf6cMXhpphCMuAH5bZFNEUjRdD9YmwltiUOf+njun7K5D4NGrx4W924mMENTFjJPKWysSUvB9TvnYr3VxA5eF2i65b4gSOIBat/5OTSSeRBdDHyVvGd+T0jjgU7wN3Hc7xVVXg3NQsxUXoIRVzIZvpQYeUCKH3hry8exrrh6jSjqaxUgZaevAuYHkKJ3YExIE/JDqqOJ3GBSmQTP3W50MA2MFRx22rghWvJgpqSXwpbjbg11aeXBiNOgYY/0NgjK73D47SSLdOBEdjMSEvb6l1AK9tkrtw379RpyI0MTN/toGuq9bdyR+4t6tna4hycCSgHH7hou0HTUxU6mJ+oIvAfuqJ35PCv+BuPsxnOpXyynZVf5ucb4wGt4JhBUFo3m+LjVHzVpf6n+WbHYJL9sxU4Dr+lZKewEJ1Oh4/A2HkEF3NaD9DC6axXroVhTgukfAJD/61On/pYsK2azfHh7oiepatPYHjCaf/8BEvdXfaFsNBCS9qbBRUhfOSekHFlhGPatMAQI/tnjw+zypcKCfpgXe6bIaDfOSq4CoTnxN7wX0b8Tyt5IzD/QJkEfbKzi1l4b/qNU5R3wLMu5geqAfBkQt3x4B3ou+rLUw/xTpzEF87HrgSGRCq3KOQwXb9SvdeGWY+DVx/3iSyBq59Rsu4BjZSEJjADTZIBXG+8c9uijJCLMcuYz2oNB04IjkCke04JfISXSgmNlJQfI9yf0evLvR91PwgDAhMb3euXysYSBfn1bCe9/zBanrYMSNS0H6iw==
-      template:
-        metadata:
-          creationTimestamp: null
-          name: argocd-notifications-secret
-          namespace: argocd
+  # - apiVersion: bitnami.com/v1alpha1
+  #   kind: SealedSecret
+  #   metadata:
+  #     creationTimestamp: null
+  #     name: argocd-notifications-secret
+  #     namespace: argocd
+  #   spec:
+  #     encryptedData:
+  #       webhook-url: AgAPl4zYnlUC7BNUTElHxkprb6f1BUVI2hZlIQpqYM4PVe34vg/vQPStsbuB56f//YPjFjT8vOZdNZje9uTaSqnIW4ETnPjYxWfBDIzT1p9h57sepT+Ehx1zgQtwmLlgByU41H2kgi7uf6cMXhpphCMuAH5bZFNEUjRdD9YmwltiUOf+njun7K5D4NGrx4W924mMENTFjJPKWysSUvB9TvnYr3VxA5eF2i65b4gSOIBat/5OTSSeRBdDHyVvGd+T0jjgU7wN3Hc7xVVXg3NQsxUXoIRVzIZvpQYeUCKH3hry8exrrh6jSjqaxUgZaevAuYHkKJ3YExIE/JDqqOJ3GBSmQTP3W50MA2MFRx22rghWvJgpqSXwpbjbg11aeXBiNOgYY/0NgjK73D47SSLdOBEdjMSEvb6l1AK9tkrtw379RpyI0MTN/toGuq9bdyR+4t6tna4hycCSgHH7hou0HTUxU6mJ+oIvAfuqJ35PCv+BuPsxnOpXyynZVf5ucb4wGt4JhBUFo3m+LjVHzVpf6n+WbHYJL9sxU4Dr+lZKewEJ1Oh4/A2HkEF3NaD9DC6axXroVhTgukfAJD/61On/pYsK2azfHh7oiepatPYHjCaf/8BEvdXfaFsNBCS9qbBRUhfOSekHFlhGPatMAQI/tnjw+zypcKCfpgXe6bIaDfOSq4CoTnxN7wX0b8Tyt5IzD/QJkEfbKzi1l4b/qNU5R3wLMu5geqAfBkQt3x4B3ou+rLUw/xTpzEF87HrgSGRCq3KOQwXb9SvdeGWY+DVx/3iSyBq59Rsu4BjZSEJjADTZIBXG+8c9uijJCLMcuYz2oNB04IjkCke04JfISXSgmNlJQfI9yf0evLvR91PwgDAhMb3euXysYSBfn1bCe9/zBanrYMSNS0H6iw==
+  #     template:
+  #       metadata:
+  #         creationTimestamp: null
+  #         name: argocd-notifications-secret
+  #         namespace: argocd
   
 
 
